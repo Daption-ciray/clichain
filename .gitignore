@@ -1,0 +1,13 @@
+node_modules
+dist
+out
+cache
+.env
+.DS_Store
+.pocrc.json
+*.tsbuildinfo
+artifacts
+typechain-types
+coverage
+contracts/node_modules
+cli/node_modules

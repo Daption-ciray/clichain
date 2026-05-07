@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Contribution Report",
+  "type": "object",
+  "required": ["schemaVersion", "project", "range", "policy", "contributors"],
+  "properties": {
+    "schemaVersion": {
+      "const": "1.0"
+    },
+    "project": {
+      "type": "object",
+      "required": ["repoUrl", "repoId", "defaultBranch"],
+      "properties": {
+        "repoUrl": { "type": "string" },
+        "repoId": { "type": "integer", "minimum": 1 },
+        "defaultBranch": { "type": "string" }
+      }
+    },
+    "range": {
+      "type": "object",
+      "required": ["from", "to", "generatedAt"],
+      "properties": {
+        "from": { "type": "string" },
+        "to": { "type": "string" },
+        "generatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "required": ["id", "notes"],
+      "properties": {
+        "id": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    },
+    "contributors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["identity", "metrics"],
+        "properties": {
+          "identity": {
+            "type": "object",
+            "required": ["gitAuthorEmail"],
+            "properties": {
+              "gitAuthorEmail": { "type": "string" }
+            }
+          },
+          "metrics": {
+            "type": "object",
+            "required": [
+              "commits",
+              "filesChanged",
+              "additions",
+              "deletions",
+              "netLines"
+            ],
+            "properties": {
+              "commits": { "type": "integer", "minimum": 0 },
+              "filesChanged": { "type": "integer", "minimum": 0 },
+              "additions": { "type": "integer", "minimum": 0 },
+              "deletions": { "type": "integer", "minimum": 0 },
+              "netLines": { "type": "integer" }
+            }
+          }
+        }
+      }
+    }
+  }
+}
