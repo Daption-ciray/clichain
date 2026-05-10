@@ -7,12 +7,13 @@ cd contracts
 cp .env.example .env
 # Fill POLYGON_AMOY_RPC_URL and DEPLOYER_PRIVATE_KEY
 npm install
-npm run deploy:amoy
+poc deploy-amoy
 ```
 
-Copy deployed address from output:
+Copy deployed addresses from output:
 
 `ContributionRegistry deployed to: 0x...`
+`ContributionBadge deployed to: 0x...`
 
 ## 2) Configure CLI
 
@@ -20,10 +21,11 @@ Copy deployed address from output:
 cd ../cli
 npm install
 npm run build
-node dist/index.js init --force
-node dist/index.js config \
+poc init --force
+poc config \
   --rpc-url "https://polygon-amoy.infura.io/v3/YOUR_KEY" \
-  --contract-address "0xDEPLOYED_CONTRACT" \
+  --contract-address "0xREGISTRY_CONTRACT" \
+  --badge-contract-address "0xBADGE_CONTRACT" \
   --policy-id "score-v1" \
   --private-key-env "POC_PRIVATE_KEY"
 ```
@@ -37,7 +39,7 @@ export POC_PRIVATE_KEY=0x...
 ## 3) Create on-chain repo
 
 ```bash
-node dist/index.js create-repo \
+poc create-repo \
   --name "demo-repo" \
   --approvers "0xApprover1,0xApprover2,0xApprover3" \
   --threshold 2
@@ -46,27 +48,30 @@ node dist/index.js create-repo \
 Set printed repo id:
 
 ```bash
-node dist/index.js config --repo-id 1
+poc config --repo-id 1
 ```
 
 ## 4) Generate and hash report
 
 ```bash
-node dist/index.js scan --from <oldCommit> --to <newCommit> --out report.json
-node dist/index.js hash --file report.json
+poc scan --from <oldCommit> --to <newCommit> --out report.json
+poc hash --file report.json
 ```
 
 ## 5) Submit + attest + finalize
 
 ```bash
-node dist/index.js submit --commit <newCommitSha40Hex> --uri "ipfs://<cid>" --file report.json
-node dist/index.js attest --report-id 1
+poc submit --commit <newCommitSha40Hex> --upload-ipfs --file report.json
+poc attest --report-id 1
 ```
 
 Attest from another approver wallet (switch `POC_PRIVATE_KEY`), then:
 
 ```bash
-node dist/index.js finalize --report-id 1
+poc badge-metadata --report-id 1 --out badge-metadata.json
+poc ipfs-upload --file badge-metadata.json --name "badge-1-metadata.json"
+poc finalize --report-id 1 --badge-uri "ipfs://<metadata-cid>"
+poc badge --token-id 1
 ```
 
 ## 6) Verify tamper-resistance
@@ -76,7 +81,15 @@ node dist/index.js finalize --report-id 1
 3. Run:
 
 ```bash
-node dist/index.js verify --expected-hash <originalHash> --file report.json
+poc verify --expected-hash <originalHash> --file report.json
 ```
 
 Expected result: `FAIL - hash mismatch`.
+
+## 7) Product dashboard
+
+```bash
+poc web
+```
+
+Open `http://127.0.0.1:8788`.

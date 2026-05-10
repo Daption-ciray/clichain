@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Proof of Contribution</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <h1>Proof of Contribution</h1>
+      <p id="network">Loading network...</p>
+    </div>
+    <div class="actions">
+      <button id="refresh" type="button">Refresh</button>
+      <button id="connect" type="button">Connect Wallet</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="summary" id="summary"></section>
+
+    <section class="layout">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Reports</h2>
+          <span id="reportCount"></span>
+        </div>
+        <div id="reports"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Actions</h2>
+          <span id="wallet"></span>
+        </div>
+        <div class="form-grid">
+          <label>Name <input id="repoName" value="demo-repo" /></label>
+          <label>Approvers <input id="approvers" placeholder="0xabc,0xdef" /></label>
+          <label>Threshold <input id="threshold" value="2" /></label>
+          <button data-action="createRepo">Create Repo</button>
+          <label>Report ID <input id="reportId" value="1" /></label>
+          <button data-action="attest">Attest</button>
+          <label>Badge metadata URI <input id="badgeUri" placeholder="ipfs://metadata-cid" /></label>
+          <button data-action="finalize">Finalize</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="layout">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Verifier</h2>
+          <button id="verifyBtn" type="button">Verify</button>
+        </div>
+        <label>Expected hash <input id="expectedHash" placeholder="0x..." /></label>
+        <textarea id="reportJson" spellcheck="false" placeholder="Paste report.json here"></textarea>
+        <pre id="verifyResult"></pre>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Badge</h2>
+          <button id="loadBadge" type="button">Load</button>
+        </div>
+        <label>Token ID <input id="tokenId" value="1" /></label>
+        <pre id="badgeResult"></pre>
+      </div>
+    </section>
+
+    <section class="layout">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>GitHub</h2>
+          <button id="loadRepos" type="button">Load Repos</button>
+        </div>
+        <div class="form-grid">
+          <label>Owner <input id="ghOwner" placeholder="openai" /></label>
+          <label>Repo <input id="ghRepo" placeholder="repo-name" /></label>
+          <label>From SHA <input id="ghFrom" placeholder="base commit" /></label>
+          <label>To SHA <input id="ghTo" placeholder="head commit" /></label>
+          <button id="loadCommits" type="button">Load Commits</button>
+          <button id="generateGithubReport" type="button">Generate Report</button>
+        </div>
+        <div id="githubOutput"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Indexer</h2>
+          <span id="eventCount"></span>
+        </div>
+        <div id="events"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>

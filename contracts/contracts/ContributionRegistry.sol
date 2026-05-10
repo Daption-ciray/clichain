@@ -1,6 +1,17 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
+interface IContributionBadge {
+    function mint(
+        address recipient,
+        uint256 reportId,
+        uint256 repoId,
+        bytes32 reportHash,
+        string calldata reportUri,
+        string calldata metadataUri
+    ) external returns (uint256 tokenId);
+}
+
 contract ContributionRegistry {
     enum ReportStatus {
         Pending,
@@ -30,6 +41,8 @@ contract ContributionRegistry {
 
     uint256 public nextRepoId = 1;
     uint256 public nextReportId = 1;
+    address public contractOwner;
+    address public badgeContract;
 
     mapping(uint256 => Repo) public repos;
     mapping(uint256 => mapping(address => bool)) public repoApprovers;
@@ -47,6 +60,7 @@ contract ContributionRegistry {
     event ApproverAdded(uint256 indexed repoId, address indexed approver);
     event ApproverRemoved(uint256 indexed repoId, address indexed approver);
     event ThresholdUpdated(uint256 indexed repoId, uint8 threshold);
+    event BadgeContractUpdated(address indexed badgeContract);
 
     event ReportSubmitted(
         uint256 indexed reportId,
@@ -67,6 +81,11 @@ contract ContributionRegistry {
         uint256 indexed repoId,
         uint32 attestationCount
     );
+    event ReportBadgeIssued(
+        uint256 indexed reportId,
+        uint256 indexed tokenId,
+        address indexed recipient
+    );
     event ReportDisputed(
         uint256 indexed reportId,
         uint256 indexed repoId,
@@ -82,6 +101,18 @@ contract ContributionRegistry {
     error ReportNotPending();
     error AlreadyAttested();
     error ThresholdNotMet();
+    error InvalidApprover();
+    error NotContractOwner();
+    error InvalidBadgeContract();
+
+    constructor() {
+        contractOwner = msg.sender;
+    }
+
+    modifier onlyContractOwner() {
+        if (msg.sender != contractOwner) revert NotContractOwner();
+        _;
+    }
 
     modifier onlyRepoOwner(uint256 repoId) {
         Repo storage repo = repos[repoId];
@@ -97,12 +128,18 @@ contract ContributionRegistry {
         _;
     }
 
+    function setBadgeContract(address badgeContract_) external onlyContractOwner {
+        if (badgeContract_ == address(0)) revert InvalidBadgeContract();
+        badgeContract = badgeContract_;
+        emit BadgeContractUpdated(badgeContract_);
+    }
+
     function createRepo(
         string calldata name,
         address[] calldata approvers,
         uint8 threshold
     ) external returns (uint256 repoId) {
-        if (threshold == 0 || approvers.length < threshold) revert InvalidThreshold();
+        if (threshold == 0) revert InvalidThreshold();
 
         repoId = nextRepoId++;
         Repo storage repo = repos[repoId];
@@ -113,6 +150,7 @@ contract ContributionRegistry {
 
         for (uint256 i = 0; i < approvers.length; i++) {
             address approver = approvers[i];
+            if (approver == address(0)) revert InvalidApprover();
             if (!repoApprovers[repoId][approver]) {
                 repoApprovers[repoId][approver] = true;
                 repo.approverCount += 1;
@@ -120,10 +158,12 @@ contract ContributionRegistry {
             }
         }
 
+        if (repo.approverCount < threshold) revert InvalidThreshold();
         emit RepoCreated(repoId, msg.sender, threshold, name);
     }
 
     function addApprover(uint256 repoId, address approver) external onlyRepoOwner(repoId) {
+        if (approver == address(0)) revert InvalidApprover();
         if (!repoApprovers[repoId][approver]) {
             repoApprovers[repoId][approver] = true;
             repos[repoId].approverCount += 1;
@@ -133,12 +173,10 @@ contract ContributionRegistry {
 
     function removeApprover(uint256 repoId, address approver) external onlyRepoOwner(repoId) {
         if (repoApprovers[repoId][approver]) {
+            uint32 nextApproverCount = repos[repoId].approverCount - 1;
+            if (nextApproverCount < repos[repoId].threshold) revert InvalidThreshold();
             repoApprovers[repoId][approver] = false;
-            repos[repoId].approverCount -= 1;
-            if (repos[repoId].threshold > repos[repoId].approverCount) {
-                repos[repoId].threshold = uint8(repos[repoId].approverCount);
-                emit ThresholdUpdated(repoId, repos[repoId].threshold);
-            }
+            repos[repoId].approverCount = nextApproverCount;
             emit ApproverRemoved(repoId, approver);
         }
     }
@@ -190,6 +228,14 @@ contract ContributionRegistry {
     }
 
     function finalize(uint256 reportId) external {
+        _finalize(reportId, "");
+    }
+
+    function finalizeWithBadgeUri(uint256 reportId, string calldata badgeUri) external {
+        _finalize(reportId, badgeUri);
+    }
+
+    function _finalize(uint256 reportId, string memory badgeUri) internal {
         Report storage report = reports[reportId];
         if (report.repoId == 0) revert ReportNotFound();
         if (report.status != ReportStatus.Pending) revert ReportNotPending();
@@ -198,6 +244,18 @@ contract ContributionRegistry {
         if (report.attestationCount < repo.threshold) revert ThresholdNotMet();
 
         report.status = ReportStatus.Finalized;
+        if (badgeContract != address(0)) {
+            string memory metadataUri = bytes(badgeUri).length == 0 ? report.uri : badgeUri;
+            uint256 tokenId = IContributionBadge(badgeContract).mint(
+                report.contributor,
+                reportId,
+                report.repoId,
+                report.reportHash,
+                report.uri,
+                metadataUri
+            );
+            emit ReportBadgeIssued(reportId, tokenId, report.contributor);
+        }
         emit ReportFinalized(reportId, report.repoId, report.attestationCount);
     }
 

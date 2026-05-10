@@ -7,6 +7,7 @@ export const CONFIG_FILE = ".pocrc.json";
 const defaultConfig: PocConfig = {
   rpcUrl: "https://polygon-amoy.infura.io/v3/YOUR_KEY",
   contractAddress: "0x0000000000000000000000000000000000000000",
+  badgeContractAddress: "0x0000000000000000000000000000000000000000",
   repoId: 1,
   policyId: "score-v1",
   privateKeyEnv: "POC_PRIVATE_KEY",

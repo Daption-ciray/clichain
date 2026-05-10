@@ -1,0 +1,937 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [7 0 R 9 0 R 11 0 R 13 0 R 15 0 R 17 0 R 19 0 R] /Count 7 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier >>
+endobj
+6 0 obj
+<< /Length 4170 >>
+stream
+BT
+/F2 18.00 Tf
+1 0 0 1 54.00 780.00 Tm
+(Proof-of-Contribution System Progress Report) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 742.00 Tm
+(Project: Smart Contract Supported Proof-of-Contribution and Soulbound Achievement Badge System) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 727.80 Tm
+(Student: Abdullah Gokalp Ciray) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 713.60 Tm
+(Base Document: DSRM Proposal, "Blockchain-Based Verification of Contribution Ownership in Group) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 699.40 Tm
+(Projects") Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 685.20 Tm
+(Current Version: Local MVP with smart contract, CLI, in-toto attestation report, local) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 671.00 Tm
+(blockchain, and local explorer) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 656.80 Tm
+(Date: May 7, 2026) Tj
+/F2 13.00 Tf
+1 0 0 1 54.00 628.60 Tm
+(1. Executive Summary) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 596.60 Tm
+(The project started from the DSRM proposal titled Smart Contract Supported Proof-of-) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 582.40 Tm
+(Contribution and Soulbound Achievement Badge System. The original motivation was to create a) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 568.20 Tm
+(fairer and externally verifiable way to record individual contributions in university group) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 554.00 Tm
+(projects, hackathons, and open-source teams.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 531.80 Tm
+(The current implementation has reached a working local MVP. The system now scans a Git commit) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 517.60 Tm
+(range, generates a contribution report in a standard attestation format, hashes that report,) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 503.40 Tm
+(records the hash on a smart contract, collects threshold-based approvals from authorized) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 489.20 Tm
+(approvers, finalizes the report, and verifies that the local report file still matches the on-) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 475.00 Tm
+(chain hash.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 452.80 Tm
+(The most important design decision from the proposal has been preserved: the actual evidence) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 438.60 Tm
+(file is not stored on-chain. Instead, the chain stores immutable evidence traces such as report) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 424.40 Tm
+(hashes, commit hashes, and URIs.) Tj
+/F2 13.00 Tf
+1 0 0 1 54.00 396.20 Tm
+(2. Original Proposal Baseline) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 364.20 Tm
+(The proposal identified the following core problem:) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 342.00 Tm
+(Quote: In group projects, it is difficult to later verify the real contribution of each team) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 327.80 Tm
+(member. Existing task tools may track tasks, but they do not provide immutable, timestamped,) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 313.60 Tm
+(externally verifiable records of approved contribution evidence.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 291.40 Tm
+(The proposed solution was a blockchain-based Proof-of-Contribution platform where:) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 269.20 Tm
+(- Contribution evidence is submitted by project members.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 255.00 Tm
+(- Authorized users approve the evidence.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 240.80 Tm
+(- Approved records are written to blockchain as immutable records.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 226.60 Tm
+(- Contribution records are linked to wallet addresses.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 212.40 Tm
+(- Evidence is represented by GitHub links, file hashes, report hashes, or IPFS CIDs.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 198.20 Tm
+(- Contribution profiles and non-transferable Soulbound badges are eventually issued.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 176.00 Tm
+(The proposal also used the DSRM approach and defined evaluation goals such as verifiability,) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 161.80 Tm
+(immutability, authorization, duplicate prevention, and non-transferability of badges.) Tj
+/F2 13.00 Tf
+1 0 0 1 54.00 133.60 Tm
+(3. Current Implemented Scope) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 101.60 Tm
+(The current version implements the core Proof-of-Contribution verification flow at report) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 87.40 Tm
+(level.) Tj
+/F1 8 Tf
+1 0 0 1 54.00 28 Tm
+(Proof-of-Contribution Progress Report) Tj
+1 0 0 1 499.00 28 Tm
+(Page 1) Tj
+ET
+endstream
+endobj
+7 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> /Contents 6 0 R >>
+endobj
+8 0 obj
+<< /Length 3406 >>
+stream
+BT
+/F1 10.20 Tf
+1 0 0 1 54.00 786.00 Tm
+(Implemented components:) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 763.80 Tm
+(- Solidity smart contract: ContributionRegistry) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 749.60 Tm
+(- TypeScript CLI for report generation and blockchain operations) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 735.40 Tm
+(- Git-based contribution scanning) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 721.20 Tm
+(- in-toto Statement v1 report format) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 707.00 Tm
+(- Deterministic report hashing) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 692.80 Tm
+(- On-chain report hash submission) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 678.60 Tm
+(- Threshold-based approver attestation) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 664.40 Tm
+(- Report finalization) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 650.20 Tm
+(- Chain-to-file hash verification) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 636.00 Tm
+(- Local Hardhat blockchain) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 621.80 Tm
+(- Lightweight local explorer) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 607.60 Tm
+(- Smart contract tests) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 585.40 Tm
+(The system is currently local-first. It does not depend on Polygon Amoy or any public testnet) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 571.20 Tm
+(for demonstration. A public deployment can be done later once the local behavior is finalized.) Tj
+/F2 13.00 Tf
+1 0 0 1 54.00 543.00 Tm
+(4. Architecture of the Current System) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 503.00 Tm
+(Git Repository) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 491.30 Tm
+(     |) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 479.60 Tm
+(     | scan selected commit range) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 467.90 Tm
+(     v) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 456.20 Tm
+(CLI Report Generator) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 444.50 Tm
+(     |) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 432.80 Tm
+(     | produces standard attestation) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 421.10 Tm
+(     v) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 409.40 Tm
+(in-toto Statement v1 report.json) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 397.70 Tm
+(     |) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 386.00 Tm
+(     | canonical JSON + keccak256) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 374.30 Tm
+(     v) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 362.60 Tm
+(Report Hash) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 350.90 Tm
+(     |) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 339.20 Tm
+(     | submitReport\(...\)) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 327.50 Tm
+(     v) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 315.80 Tm
+(ContributionRegistry Smart Contract) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 304.10 Tm
+(     |) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 292.40 Tm
+(     | approvers call attest\(...\)) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 280.70 Tm
+(     v) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 269.00 Tm
+(Threshold Attestation) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 257.30 Tm
+(     |) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 245.60 Tm
+(     | finalize\(...\)) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 233.90 Tm
+(     v) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 222.20 Tm
+(Finalized On-chain Report) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 210.50 Tm
+(     |) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 198.80 Tm
+(     | verify-chain compares local file hash with on-chain hash) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 187.10 Tm
+(     v) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 175.40 Tm
+(Tamper Evidence) Tj
+/F2 13.00 Tf
+1 0 0 1 54.00 141.70 Tm
+(5. Smart Contract Layer) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 109.70 Tm
+(The smart contract is located at:) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 79.50 Tm
+(contracts/contracts/ContributionRegistry.sol) Tj
+/F1 8 Tf
+1 0 0 1 54.00 28 Tm
+(Proof-of-Contribution Progress Report) Tj
+1 0 0 1 499.00 28 Tm
+(Page 2) Tj
+ET
+endstream
+endobj
+9 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> /Contents 8 0 R >>
+endobj
+10 0 obj
+<< /Length 3694 >>
+stream
+BT
+/F1 10.20 Tf
+1 0 0 1 54.00 786.00 Tm
+(The smart contract is used as the trust layer of the system. It does not calculate contribution) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 771.80 Tm
+(quality. Instead, it records approved evidence hashes and controls the approval/finalization) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 757.60 Tm
+(process.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 735.40 Tm
+(Implemented smart contract functions:) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 713.20 Tm
+(- createRepo: creates a repository record with owner, approver list, and threshold.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 699.00 Tm
+(- submitReport: stores report metadata and the report hash on-chain.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 684.80 Tm
+(- attest: allows authorized approvers to approve a pending report.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 670.60 Tm
+(- finalize: marks the report as finalized once the attestation threshold is met.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 656.40 Tm
+(- reports: exposes stored report state for verification and explorer display.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 634.20 Tm
+(On-chain data currently includes:) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 612.00 Tm
+(- repoId) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 597.80 Tm
+(- contributor) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 583.60 Tm
+(- commitSha) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 569.40 Tm
+(- reportHash) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 555.20 Tm
+(- uri) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 541.00 Tm
+(- policyId) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 526.80 Tm
+(- attestationCount) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 512.60 Tm
+(- status) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 498.40 Tm
+(- submittedAt) Tj
+/F2 13.00 Tf
+1 0 0 1 54.00 470.20 Tm
+(6. Report Format and Standardization) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 438.20 Tm
+(The earlier custom JSON report format was replaced with in-toto Statement v1, which is a) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 424.00 Tm
+(standard attestation envelope used in software supply-chain security.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 401.80 Tm
+(Current report structure:) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 371.60 Tm
+({) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 359.90 Tm
+(  "_type": "https://in-toto.io/Statement/v1",) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 348.20 Tm
+(  "subject": [) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 336.50 Tm
+(    {) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 324.80 Tm
+(      "name": "git commit range",) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 313.10 Tm
+(      "digest": {) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 301.40 Tm
+(        "gitCommitFrom": "...",) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 289.70 Tm
+(        "gitCommitTo": "...") Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 278.00 Tm
+(      }) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 266.30 Tm
+(    }) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 254.60 Tm
+(  ],) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 242.90 Tm
+(  "predicateType": "https://akadaltr.dev/attestation/contribution-report/v1",) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 231.20 Tm
+(  "predicate": {) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 219.50 Tm
+(    "project": "...",) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 207.80 Tm
+(    "range": "...",) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 196.10 Tm
+(    "policy": "...",) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 184.40 Tm
+(    "contributors": [) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 172.70 Tm
+(      {) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 161.00 Tm
+(        "identity": "...",) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 149.30 Tm
+(        "metrics": {) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 137.60 Tm
+(          "commits": 1,) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 125.90 Tm
+(          "filesChanged": 1,) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 114.20 Tm
+(          "additions": 1,) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 102.50 Tm
+(          "deletions": 0,) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 90.80 Tm
+(          "netLines": 1) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 79.10 Tm
+(        }) Tj
+/F1 8 Tf
+1 0 0 1 54.00 28 Tm
+(Proof-of-Contribution Progress Report) Tj
+1 0 0 1 499.00 28 Tm
+(Page 3) Tj
+ET
+endstream
+endobj
+11 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> /Contents 10 0 R >>
+endobj
+12 0 obj
+<< /Length 3127 >>
+stream
+BT
+/F3 8.70 Tf
+1 0 0 1 54.00 786.00 Tm
+(      }) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 774.30 Tm
+(    ]) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 762.60 Tm
+(  }) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 750.90 Tm
+(}) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 723.20 Tm
+(This change directly addresses the feedback that the report should use a generally recognized) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 709.00 Tm
+(data template instead of a fully custom structure.) Tj
+/F2 13.00 Tf
+1 0 0 1 54.00 680.80 Tm
+(7. CLI Layer) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 648.80 Tm
+(The CLI is located in:) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 618.60 Tm
+(cli/) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 590.90 Tm
+(The CLI performs all off-chain operations:) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 568.70 Tm
+(- Reads Git history.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 554.50 Tm
+(- Generates report.json.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 540.30 Tm
+(- Computes the report hash.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 526.10 Tm
+(- Sends transactions to the smart contract.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 511.90 Tm
+(- Runs attestation and finalization commands.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 497.70 Tm
+(- Verifies local files against on-chain hash values.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 475.50 Tm
+(Main CLI commands:) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 445.30 Tm
+(node dist/index.js scan --from <oldCommit> --to <newCommit> --out report.json) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 433.60 Tm
+(node dist/index.js hash --file report.json) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 421.90 Tm
+(node dist/index.js submit --commit <commitSha> --uri "local://report.json" --file report.json) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 410.20 Tm
+(node dist/index.js attest --report-id 1) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 398.50 Tm
+(node dist/index.js finalize --report-id 1) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 386.80 Tm
+(node dist/index.js verify-chain --report-id 1 --file report.json) Tj
+/F2 13.00 Tf
+1 0 0 1 54.00 353.10 Tm
+(8. Local Blockchain and Explorer) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 321.10 Tm
+(The project now includes a local development environment:) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 298.90 Tm
+(- Local blockchain: Hardhat local chain) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 284.70 Tm
+(- Local RPC: http://127.0.0.1:8545) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 270.50 Tm
+(- Local explorer: http://127.0.0.1:8787) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 248.30 Tm
+(The local explorer shows:) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 226.10 Tm
+(- Chain ID) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 211.90 Tm
+(- Latest blocks) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 197.70 Tm
+(- Transactions) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 183.50 Tm
+(- Repo creation events) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 169.30 Tm
+(- Report submission events) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 155.10 Tm
+(- Attestation events) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 140.90 Tm
+(- Finalization events) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 126.70 Tm
+(- Report hash) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 112.50 Tm
+(- Attestation count) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 98.30 Tm
+(- Report status) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 76.10 Tm
+(This makes it possible to demonstrate the system without relying on Amoy testnet gas.) Tj
+/F1 8 Tf
+1 0 0 1 54.00 28 Tm
+(Proof-of-Contribution Progress Report) Tj
+1 0 0 1 499.00 28 Tm
+(Page 4) Tj
+ET
+endstream
+endobj
+13 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> /Contents 12 0 R >>
+endobj
+14 0 obj
+<< /Length 3521 >>
+stream
+BT
+/F2 13.00 Tf
+1 0 0 1 54.00 786.00 Tm
+(9. Current Demo State) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 754.00 Tm
+(The current local demo has successfully completed the following flow:) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 723.80 Tm
+(createRepo) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 712.10 Tm
+(-> scan Git commit range) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 700.40 Tm
+(-> generate in-toto report.json) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 688.70 Tm
+(-> hash report.json) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 677.00 Tm
+(-> submit report hash on-chain) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 665.30 Tm
+(-> two approvers attest) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 653.60 Tm
+(-> finalize report) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 641.90 Tm
+(-> verify local file hash against on-chain reportHash) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 614.20 Tm
+(Current finalized local report state:) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 584.00 Tm
+(reportId: 1) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 572.30 Tm
+(status: 1) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 560.60 Tm
+(status meaning: Finalized) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 548.90 Tm
+(attestationCount: 2) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 537.20 Tm
+(reportHash: 0xeedc69326f002aec873e18b18ae4e764161e10d17fce03b1fc9301ab400451d1) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 525.50 Tm
+(uri: local://report.json) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 497.80 Tm
+(The verify-chain command currently returns:) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 467.60 Tm
+(OK - file hash matches on-chain reportHash) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 439.90 Tm
+(This means that the local report.json file still matches the hash stored in the smart contract.) Tj
+/F2 13.00 Tf
+1 0 0 1 54.00 411.70 Tm
+(10. Technologies Used) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 379.70 Tm
+(The current implementation uses:) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 357.50 Tm
+(- Solidity for the smart contract) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 343.30 Tm
+(- Hardhat for local blockchain, compilation, and tests) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 329.10 Tm
+(- TypeScript and Node.js for the CLI) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 314.90 Tm
+(- ethers.js for blockchain interaction) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 300.70 Tm
+(- commander for CLI command definitions) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 286.50 Tm
+(- in-toto Statement v1 as the report attestation format) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 272.30 Tm
+(- JSON Schema for report structure validation) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 258.10 Tm
+(- Local HTTP explorer for visualizing local chain state) Tj
+/F2 13.00 Tf
+1 0 0 1 54.00 229.90 Tm
+(11. Evaluation Against Proposal Criteria) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 197.90 Tm
+(| Proposal Criterion | Current Status | Notes |) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 186.20 Tm
+(|---|---|---|) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 174.50 Tm
+(| Verifiability | Implemented | Report hash, commit hash, URI, status, and approvals can be ) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 162.80 Tm
+(verified. |) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 151.10 Tm
+(| Immutability | Implemented for report hash | Once submitted, the on-chain report hash ) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 139.40 Tm
+(cannot be silently changed. |) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 127.70 Tm
+(| Authorization | Partially implemented | Approver-only attestation is implemented. More ) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 116.00 Tm
+(granular project/task roles remain future work. |) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 104.30 Tm
+(| Duplicate prevention | Implemented at report-hash level | The same report hash cannot be ) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 92.60 Tm
+(submitted twice for the same repo. |) Tj
+/F1 8 Tf
+1 0 0 1 54.00 28 Tm
+(Proof-of-Contribution Progress Report) Tj
+1 0 0 1 499.00 28 Tm
+(Page 5) Tj
+ET
+endstream
+endobj
+15 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> /Contents 14 0 R >>
+endobj
+16 0 obj
+<< /Length 3543 >>
+stream
+BT
+/F3 8.70 Tf
+1 0 0 1 54.00 786.00 Tm
+(| Evidence hash / CID model | Implemented | The system stores reportHash and uri; future ) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 774.30 Tm
+(deployment can use IPFS URI. |) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 762.60 Tm
+(| Contribution profile | Partially implemented | Report contains contributor metrics, but ) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 750.90 Tm
+(profile UI is not yet a full feature. |) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 739.20 Tm
+(| Soulbound badges | Not yet implemented | Still future work from the original proposal. |) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 727.50 Tm
+(| Web interface | Replaced by local explorer for MVP | The current explorer demonstrates ) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 715.80 Tm
+(chain state, but it is not a full user-facing app yet. |) Tj
+/F2 13.00 Tf
+1 0 0 1 54.00 690.10 Tm
+(12. Differences From the Original Proposal) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 658.10 Tm
+(The original proposal described a broader project/task/contribution/badge system. The current) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 643.90 Tm
+(MVP focuses on the core verification primitive first:) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 613.70 Tm
+(contribution report) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 602.00 Tm
+(-> attestation document) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 590.30 Tm
+(-> hash) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 578.60 Tm
+(-> on-chain approval) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 566.90 Tm
+(-> finalization) Tj
+/F3 8.70 Tf
+1 0 0 1 54.00 555.20 Tm
+(-> verification) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 527.50 Tm
+(This is a narrower but stronger foundation. Instead of building a full UI and badge system) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 513.30 Tm
+(immediately, the implementation first proves that tamper-resistant contribution evidence can be) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 499.10 Tm
+(generated, stored, approved, finalized, and verified.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 476.90 Tm
+(Main pending items from the proposal:) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 454.70 Tm
+(- Task-level contribution submission) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 440.50 Tm
+(- Project member management) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 426.30 Tm
+(- Full web interface) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 412.10 Tm
+(- Soulbound badge minting) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 397.90 Tm
+(- Badge transfer restriction tests) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 383.70 Tm
+(- IPFS or Arweave storage integration) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 369.50 Tm
+(- Public network deployment) Tj
+/F2 13.00 Tf
+1 0 0 1 54.00 341.30 Tm
+(13. Next Steps) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 309.30 Tm
+(Recommended next development steps:) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 287.10 Tm
+(1. Add task-level data structures to the smart contract.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 272.90 Tm
+(2. Add member management and role-based authorization.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 258.70 Tm
+(3. Add CLI commands for approver management.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 244.50 Tm
+(4. Add IPFS storage for report.json.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 230.30 Tm
+(5. Extend the explorer into a web interface.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 216.10 Tm
+(6. Implement Soulbound badge minting.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 201.90 Tm
+(7. Add tests for badge non-transferability.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 187.70 Tm
+(8. Harden validation for CLI inputs and smart contract edge cases.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 173.50 Tm
+(9. Deploy to a selected public testnet or production-compatible blockchain.) Tj
+/F2 13.00 Tf
+1 0 0 1 54.00 145.30 Tm
+(14. Conclusion) Tj
+/F1 8 Tf
+1 0 0 1 54.00 28 Tm
+(Proof-of-Contribution Progress Report) Tj
+1 0 0 1 499.00 28 Tm
+(Page 6) Tj
+ET
+endstream
+endobj
+17 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> /Contents 16 0 R >>
+endobj
+18 0 obj
+<< /Length 1111 >>
+stream
+BT
+/F1 10.20 Tf
+1 0 0 1 54.00 786.00 Tm
+(The project has progressed from a proposal into a working local MVP. It now demonstrates the) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 771.80 Tm
+(most important blockchain-based proof-of-contribution concept: contribution evidence can be) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 757.60 Tm
+(represented as a standard attestation document, hashed, stored on-chain, approved by authorized) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 743.40 Tm
+(parties, finalized after a threshold is met, and later verified against the original file.) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 721.20 Tm
+(In its current form, the system is a functional blockchain-based contribution verification) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 707.00 Tm
+(prototype. It preserves the main idea of the proposal while narrowing the implementation to the) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 692.80 Tm
+(most important technical proof: tamper-evident, approved, and externally verifiable) Tj
+/F1 10.20 Tf
+1 0 0 1 54.00 678.60 Tm
+(contribution records.) Tj
+/F1 8 Tf
+1 0 0 1 54.00 28 Tm
+(Proof-of-Contribution Progress Report) Tj
+1 0 0 1 499.00 28 Tm
+(Page 7) Tj
+ET
+endstream
+endobj
+19 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> /Contents 18 0 R >>
+endobj
+xref
+0 20
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000156 00000 n 
+0000000226 00000 n 
+0000000301 00000 n 
+0000000369 00000 n 
+0000004591 00000 n 
+0000004737 00000 n 
+0000008195 00000 n 
+0000008341 00000 n 
+0000012088 00000 n 
+0000012236 00000 n 
+0000015416 00000 n 
+0000015564 00000 n 
+0000019138 00000 n 
+0000019286 00000 n 
+0000022882 00000 n 
+0000023030 00000 n 
+0000024194 00000 n 
+trailer
+<< /Size 20 /Root 1 0 R >>
+startxref
+24342
+%%EOF

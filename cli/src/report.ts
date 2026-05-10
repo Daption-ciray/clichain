@@ -1,7 +1,10 @@
 import fs from "node:fs";
 import path from "node:path";
-import { execSync } from "node:child_process";
-import { ContributionReport } from "./types";
+import { execFileSync } from "node:child_process";
+import { ContributionPredicate, ContributionReport } from "./types";
+
+const IN_TOTO_STATEMENT_TYPE = "https://in-toto.io/Statement/v1";
+const CONTRIBUTION_PREDICATE_TYPE = "https://akadaltr.dev/attestation/contribution-report/v1";
 
 type Stat = {
   commits: number;
@@ -10,8 +13,31 @@ type Stat = {
   deletions: number;
 };
 
-function run(cmd: string): string {
-  return execSync(cmd, { encoding: "utf8", stdio: ["pipe", "pipe", "pipe"] }).trim();
+function runGit(args: string[], fallback?: string): string {
+  try {
+    return execFileSync("git", args, {
+      encoding: "utf8",
+      stdio: ["pipe", "pipe", "pipe"],
+    }).trim();
+  } catch (err) {
+    if (fallback !== undefined) return fallback;
+    throw err;
+  }
+}
+
+function assertSafeGitRef(ref: string, label: string): void {
+  if (!/^[0-9A-Za-z._/@:+~^-]+$/.test(ref)) {
+    throw new Error(`${label} contains unsupported characters: ${ref}`);
+  }
+}
+
+function resolveCommit(ref: string, label: string): string {
+  assertSafeGitRef(ref, label);
+  const sha = runGit(["rev-parse", "--verify", `${ref}^{commit}`]);
+  if (!/^[0-9a-f]{40}$/i.test(sha)) {
+    throw new Error(`${label} did not resolve to a commit: ${ref}`);
+  }
+  return sha;
 }
 
 function canonicalize(value: unknown): unknown {
@@ -33,11 +59,19 @@ export function canonicalJSONString(value: unknown): string {
   return JSON.stringify(canonicalize(value));
 }
 
-export function generateReport(from: string, to: string, repoId: number, policyId: string): ContributionReport {
-  const repoUrl = run("git config --get remote.origin.url || echo local");
-  const defaultBranch = run("git rev-parse --abbrev-ref HEAD");
+export function generateReport(
+  from: string,
+  to: string,
+  repoId: number,
+  policyId: string,
+  generatedAt = new Date().toISOString()
+): ContributionReport {
+  const fromSha = resolveCommit(from, "--from");
+  const toSha = resolveCommit(to, "--to");
+  const repoUrl = runGit(["config", "--get", "remote.origin.url"], "local");
+  const defaultBranch = runGit(["rev-parse", "--abbrev-ref", "HEAD"]);
 
-  const commitsRaw = run(`git log --format="%ae|%H" ${from}..${to}`);
+  const commitsRaw = runGit(["log", "--format=%ae|%H", `${fromSha}..${toSha}`]);
   const lines = commitsRaw ? commitsRaw.split("\n") : [];
   const statByAuthor = new Map<string, Stat>();
 
@@ -52,9 +86,9 @@ export function generateReport(from: string, to: string, repoId: number, policyI
     };
 
     entry.commits += 1;
-    const numstat = run(`git show --numstat --format="" ${sha}`);
+    const numstat = runGit(["show", "--numstat", "--format=", sha]);
     if (numstat) {
-      const rows = numstat.split("\n");
+      const rows = numstat.split("\n").filter(Boolean);
       entry.filesChanged += rows.length;
       for (const row of rows) {
         const [a, d] = row.split("\t");
@@ -68,7 +102,7 @@ export function generateReport(from: string, to: string, repoId: number, policyI
     statByAuthor.set(author, entry);
   }
 
-  const contributors = [...statByAuthor.entries()].map(([email, s]) => ({
+  const contributors = [...statByAuthor.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([email, s]) => ({
     identity: { gitAuthorEmail: email },
     metrics: {
       commits: s.commits,
@@ -79,7 +113,7 @@ export function generateReport(from: string, to: string, repoId: number, policyI
     },
   }));
 
-  return {
+  const predicate: ContributionPredicate = {
     schemaVersion: "1.0",
     project: {
       repoUrl,
@@ -87,15 +121,31 @@ export function generateReport(from: string, to: string, repoId: number, policyI
       defaultBranch,
     },
     range: {
-      from,
-      to,
-      generatedAt: new Date().toISOString(),
+      from: fromSha,
+      to: toSha,
+      generatedAt,
     },
     policy: {
       id: policyId,
-      notes: "Deterministic git-stat based report. On-chain stores hash only.",
+      notes: "Git-stat based contribution attestation. On-chain stores hash only.",
     },
     contributors,
+  };
+
+  return {
+    _type: IN_TOTO_STATEMENT_TYPE,
+    subject: [
+      {
+        name: `${repoUrl}#${from}..${to}`,
+        uri: repoUrl,
+        digest: {
+          gitCommitFrom: fromSha,
+          gitCommitTo: toSha,
+        },
+      },
+    ],
+    predicateType: CONTRIBUTION_PREDICATE_TYPE,
+    predicate,
   };
 }
 

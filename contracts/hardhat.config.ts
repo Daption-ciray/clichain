@@ -6,7 +6,15 @@ const amoyUrl = process.env.POLYGON_AMOY_RPC_URL ?? "";
 const deployerKey = process.env.DEPLOYER_PRIVATE_KEY ?? "";
 
 const config: HardhatUserConfig = {
-  solidity: "0.8.24",
+  solidity: {
+    version: "0.8.24",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200,
+      },
+    },
+  },
   networks: {
     amoy: {
       chainId: 80002,

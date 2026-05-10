@@ -5,6 +5,9 @@ cache
 .env
 .DS_Store
 .pocrc.json
+Library/
+cli/report.json
+docs/.Rhistory
 *.tsbuildinfo
 artifacts
 typechain-types
