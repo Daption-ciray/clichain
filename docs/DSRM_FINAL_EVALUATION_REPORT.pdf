@@ -1,0 +1,432 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [6 0 R 8 0 R 10 0 R 12 0 R 14 0 R 16 0 R 18 0 R 20 0 R] /Count 8 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+5 0 obj
+<< /Length 4199 >>
+stream
+BT
+/F2 16 Tf 52 790 Td (Proof-of-Contribution System) Tj -52 -790 Td
+/F1 9 Tf 52 752 Td (**Final DSRM Evaluation Report**) Tj -52 -752 Td
+/F1 9 Tf 52 740 Td (**Project:** Smart Contract Supported Proof-of-Contribution and Soulbound Achievement) Tj -52 -740 Td
+/F1 9 Tf 52 728 Td (Badge System) Tj -52 -728 Td
+/F1 9 Tf 52 716 Td (**Students:** Abdullah Gokalp Ciray, Orhan Efe Kocaoglu) Tj -52 -716 Td
+/F1 9 Tf 52 704 Td (**Base Proposal:** Blockchain-Based Verification of Contribution Ownership in Group) Tj -52 -704 Td
+/F1 9 Tf 52 692 Td (Projects) Tj -52 -692 Td
+/F1 9 Tf 52 680 Td (**Repository:** https://github.com/Daption-ciray/clichain) Tj -52 -680 Td
+/F1 9 Tf 52 668 Td (**Date:** May 12, 2026) Tj -52 -668 Td
+/F2 13 Tf 52 644 Td (1. Executive Summary) Tj -52 -644 Td
+/F1 9 Tf 52 610 Td (This project has reached a public testnet academic demo level. The original DSRM) Tj -52 -610 Td
+/F1 9 Tf 52 598 Td (proposal aimed to create a blockchain-supported Proof-of-Contribution system where) Tj -52 -598 Td
+/F1 9 Tf 52 586 Td (contribution evidence in group projects can be recorded as immutable, timestamped, and) Tj -52 -586 Td
+/F1 9 Tf 52 574 Td (externally verifiable records, and where approved contributors can receive non-) Tj -52 -574 Td
+/F1 9 Tf 52 562 Td (transferable Soulbound achievement badges.) Tj -52 -562 Td
+/F1 9 Tf 52 538 Td (The implemented system satisfies the core research claim of the proposal: contribution) Tj -52 -538 Td
+/F1 9 Tf 52 526 Td (evidence can be represented as an off-chain report, hashed, recorded on-chain,) Tj -52 -526 Td
+/F1 9 Tf 52 514 Td (approved by an authorized role, finalized, verified later against the original report) Tj -52 -514 Td
+/F1 9 Tf 52 502 Td (file, and connected to a non-transferable badge.) Tj -52 -502 Td
+/F1 9 Tf 52 478 Td (The final implementation uses:) Tj -52 -478 Td
+/F1 9 Tf 52 454 Td (? Solidity smart contracts for contribution report registry and soulbound badges) Tj -52 -454 Td
+/F1 9 Tf 52 442 Td (? Polygon Amoy public testnet deployment) Tj -52 -442 Td
+/F1 9 Tf 52 430 Td (? TypeScript CLI) Tj -52 -430 Td
+/F1 9 Tf 52 418 Td (? Local web dashboard with wallet connect) Tj -52 -418 Td
+/F1 9 Tf 52 406 Td (? Git-based report generation) Tj -52 -406 Td
+/F1 9 Tf 52 394 Td (? in-toto Statement v1 report format) Tj -52 -394 Td
+/F1 9 Tf 52 382 Td (? Canonical JSON hashing with `keccak256`) Tj -52 -382 Td
+/F1 9 Tf 52 370 Td (? Threshold-based attestation and finalization) Tj -52 -370 Td
+/F1 9 Tf 52 358 Td (? Soulbound badge minting) Tj -52 -358 Td
+/F1 9 Tf 52 346 Td (? Report verification against on-chain hash) Tj -52 -346 Td
+/F1 9 Tf 52 334 Td (? Lightweight backend/indexer API) Tj -52 -334 Td
+/F1 9 Tf 52 322 Td (? GitHub repository integration foundation) Tj -52 -322 Td
+/F1 9 Tf 52 310 Td (? Pinata/IPFS upload support in code) Tj -52 -310 Td
+/F1 9 Tf 52 286 Td (The project does not yet implement the full task/member/project-management platform) Tj -52 -286 Td
+/F1 9 Tf 52 274 Td (described in the broad proposal. Instead, it implements the core verification layer at) Tj -52 -274 Td
+/F1 9 Tf 52 262 Td (report level, which is the most important blockchain-specific part of the proposal.) Tj -52 -262 Td
+/F2 13 Tf 52 238 Td (2. DSRM Alignment) Tj -52 -238 Td
+/F2 11 Tf 52 204 Td (2.1 Problem Identification and Motivation) Tj -52 -204 Td
+/F1 9 Tf 52 177 Td (The proposal identified a common problem in group projects: individual contributions) Tj -52 -177 Td
+/F1 9 Tf 52 165 Td (are difficult to verify after the project is completed. Informal claims, centralized) Tj -52 -165 Td
+/F1 9 Tf 52 153 Td (task boards, or subjective statements are not strong enough when an instructor,) Tj -52 -153 Td
+/F1 9 Tf 52 141 Td (supervisor, or external evaluator needs to verify who contributed, when the) Tj -52 -141 Td
+/F1 9 Tf 52 129 Td (contribution happened, what evidence supports it, and who approved it.) Tj -52 -129 Td
+/F1 9 Tf 52 105 Td (The implemented system directly addresses this problem by anchoring contribution) Tj -52 -105 Td
+/F1 9 Tf 52 93 Td (report hashes on a public blockchain and requiring an authorized attestation process) Tj -52 -93 Td
+/F1 9 Tf 52 81 Td (before finalization.) Tj -52 -81 Td
+ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 5 0 R >>
+endobj
+7 0 obj
+<< /Length 3724 >>
+stream
+BT
+/F1 9 Tf 52 790 Td (**Status:** Addressed.) Tj -52 -790 Td
+/F2 11 Tf 52 766 Td (2.2 Definition of Objectives for a Solution) Tj -52 -766 Td
+/F1 9 Tf 52 739 Td (The proposal defined the following main objectives:) Tj -52 -739 Td
+/F1 9 Tf 52 715 Td (| Objective | Current Status | Evidence |) Tj -52 -715 Td
+/F1 9 Tf 52 703 Td (|---|---:|---|) Tj -52 -703 Td
+/F1 9 Tf 52 691 Td (| Create project records | Implemented as repo records | `createRepo`, Amoy `repoId:) Tj -52 -691 Td
+/F1 9 Tf 52 679 Td (1` |) Tj -52 -679 Td
+/F1 9 Tf 52 667 Td (| Add team members through wallets | Partially implemented | Approver wallet) Tj -52 -667 Td
+/F1 9 Tf 52 655 Td (management exists; member model is not separate yet |) Tj -52 -655 Td
+/F1 9 Tf 52 643 Td (| Submit contribution evidence | Implemented at report level | `submitReport`, report) Tj -52 -643 Td
+/F1 9 Tf 52 631 Td (hash stored on-chain |) Tj -52 -631 Td
+/F1 9 Tf 52 619 Td (| Approve evidence through authorized users | Implemented | `attest`, threshold-based) Tj -52 -619 Td
+/F1 9 Tf 52 607 Td (approver authorization |) Tj -52 -607 Td
+/F1 9 Tf 52 595 Td (| Write approved records to blockchain | Implemented | finalized Amoy report |) Tj -52 -595 Td
+/F1 9 Tf 52 583 Td (| Generate contribution profiles | Partially implemented | contributor metrics are) Tj -52 -583 Td
+/F1 9 Tf 52 571 Td (inside `report.json`, no profile UI yet |) Tj -52 -571 Td
+/F1 9 Tf 52 559 Td (| Issue non-transferable Soulbound badges | Implemented | `ContributionBadge`,) Tj -52 -559 Td
+/F1 9 Tf 52 547 Td (`locked: true` |) Tj -52 -547 Td
+/F1 9 Tf 52 523 Td (**Status:** Core objectives addressed; broad task/member/profile objectives partially) Tj -52 -523 Td
+/F1 9 Tf 52 511 Td (addressed.) Tj -52 -511 Td
+/F2 11 Tf 52 487 Td (2.3 Design and Development) Tj -52 -487 Td
+/F1 9 Tf 52 460 Td (The artifact consists of four main layers:) Tj -52 -460 Td
+/F1 9 Tf 52 436 Td (| Layer | Implemented Component |) Tj -52 -436 Td
+/F1 9 Tf 52 424 Td (|---|---|) Tj -52 -424 Td
+/F1 9 Tf 52 412 Td (| Smart contract layer | `ContributionRegistry`, `ContributionBadge` |) Tj -52 -412 Td
+/F1 9 Tf 52 400 Td (| Off-chain evidence layer | Git scan, in-toto `report.json`, canonical hash |) Tj -52 -400 Td
+/F1 9 Tf 52 388 Td (| Storage/reference layer | URI field supports GitHub/IPFS; Pinata upload code exists) Tj -52 -388 Td
+/F1 9 Tf 52 376 Td (|) Tj -52 -376 Td
+/F1 9 Tf 52 364 Td (| Interaction layer | CLI and local web dashboard |) Tj -52 -364 Td
+/F1 9 Tf 52 340 Td (The strongest design decision from the proposal was preserved: files are not stored) Tj -52 -340 Td
+/F1 9 Tf 52 328 Td (directly on-chain. The blockchain stores compact evidence traces such as `reportHash`,) Tj -52 -328 Td
+/F1 9 Tf 52 316 Td (`commitSha`, `uri`, timestamp, approval count, and finalization status.) Tj -52 -316 Td
+/F1 9 Tf 52 292 Td (**Status:** Addressed.) Tj -52 -292 Td
+/F2 11 Tf 52 268 Td (2.4 Demonstration) Tj -52 -268 Td
+/F1 9 Tf 52 241 Td (The final academic demo was executed on Polygon Amoy.) Tj -52 -241 Td
+/F1 9 Tf 52 217 Td (**Public testnet contracts:**) Tj -52 -217 Td
+/F1 9 Tf 52 193 Td (| Component | Address |) Tj -52 -193 Td
+/F1 9 Tf 52 181 Td (|---|---|) Tj -52 -181 Td
+/F1 9 Tf 52 169 Td (| ContributionRegistry | `0x1a485444437761c39Bc13598b20C226893DF9F10` |) Tj -52 -169 Td
+/F1 9 Tf 52 157 Td (| ContributionBadge | `0x623ccdb6a8C16F6F8ba9840b51F9E705256F56B1` |) Tj -52 -157 Td
+/F1 9 Tf 52 133 Td (**Demo state:**) Tj -52 -133 Td
+/F1 9 Tf 52 109 Td (| Field | Value |) Tj -52 -109 Td
+/F1 9 Tf 52 97 Td (|---|---|) Tj -52 -97 Td
+/F1 9 Tf 52 85 Td (| Repo ID | `1` |) Tj -52 -85 Td
+/F1 9 Tf 52 73 Td (| Report ID | `1` |) Tj -52 -73 Td
+/F1 9 Tf 52 61 Td (| Badge Token ID | `1` |) Tj -52 -61 Td
+ET
+endstream
+endobj
+8 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 7 0 R >>
+endobj
+9 0 obj
+<< /Length 3783 >>
+stream
+BT
+/F1 9 Tf 52 790 Td (| Report Status | `Finalized` |) Tj -52 -790 Td
+/F1 9 Tf 52 778 Td (| Attestations | `1` |) Tj -52 -778 Td
+/F1 9 Tf 52 766 Td (| Badge Owner | `0x9aC8Be516C08f6cB7A638fb07A76E135F5508629` |) Tj -52 -766 Td
+/F1 9 Tf 52 754 Td (| Badge Locked | `true` |) Tj -52 -754 Td
+/F1 9 Tf 52 742 Td (| Report Hash | `0x2ead7402e623729b39076c20777b1c8fa6e6a6fa36b04e2c792c0e3a5af0de95` |) Tj -52 -742 Td
+/F1 9 Tf 52 730 Td (| Report URI | `https://github.com/Daption-ciray/clichain` |) Tj -52 -730 Td
+/F1 9 Tf 52 706 Td (**Transactions:**) Tj -52 -706 Td
+/F1 9 Tf 52 682 Td (| Action | Transaction Hash |) Tj -52 -682 Td
+/F1 9 Tf 52 670 Td (|---|---|) Tj -52 -670 Td
+/F1 9 Tf 52 658 Td (| Submit report | `0xaa89e513669babac69cc83a22b3afd26dd774a24efc8b8b271beaea5cac28b1c`) Tj -52 -658 Td
+/F1 9 Tf 52 646 Td (|) Tj -52 -646 Td
+/F1 9 Tf 52 634 Td (| Attest report | `0x7414d470b2a081d64820b978271dd8b5725916e9ad7da478511308718bc25126`) Tj -52 -634 Td
+/F1 9 Tf 52 622 Td (|) Tj -52 -622 Td
+/F1 9 Tf 52 610 Td (| Finalize and mint badge |) Tj -52 -610 Td
+/F1 9 Tf 52 598 Td (`0x6584b851f6a7167445b3d08175b8e42ef9531e1c95cfc88e127243eda8133bdb` |) Tj -52 -598 Td
+/F1 9 Tf 52 574 Td (**Status:** Addressed with public testnet evidence.) Tj -52 -574 Td
+/F2 11 Tf 52 550 Td (2.5 Evaluation) Tj -52 -550 Td
+/F1 9 Tf 52 523 Td (The proposal defined evaluation criteria around authorization, duplicate prevention,) Tj -52 -523 Td
+/F1 9 Tf 52 511 Td (immutability, approval, interface flow, and badge non-transferability. The current) Tj -52 -511 Td
+/F1 9 Tf 52 499 Td (system has been evaluated through smart contract tests, CLI build checks, public) Tj -52 -499 Td
+/F1 9 Tf 52 487 Td (testnet read checks, and tamper-resistance verification.) Tj -52 -487 Td
+/F1 9 Tf 52 463 Td (The detailed evaluation table is provided in Section 3.) Tj -52 -463 Td
+/F1 9 Tf 52 439 Td (**Status:** Addressed for the implemented MVP scope.) Tj -52 -439 Td
+/F2 11 Tf 52 415 Td (2.6 Communication) Tj -52 -415 Td
+/F1 9 Tf 52 388 Td (The project deliverables are available as:) Tj -52 -388 Td
+/F1 9 Tf 52 364 Td (? GitHub repository: https://github.com/Daption-ciray/clichain) Tj -52 -364 Td
+/F1 9 Tf 52 352 Td (? Solidity contracts) Tj -52 -352 Td
+/F1 9 Tf 52 340 Td (? CLI commands) Tj -52 -340 Td
+/F1 9 Tf 52 328 Td (? Web dashboard) Tj -52 -328 Td
+/F1 9 Tf 52 316 Td (? DSRM progress/final reports) Tj -52 -316 Td
+/F1 9 Tf 52 304 Td (? Public Amoy contract addresses and transaction hashes) Tj -52 -304 Td
+/F1 9 Tf 52 292 Td (? Test outputs) Tj -52 -292 Td
+/F1 9 Tf 52 280 Td (? Demo evidence) Tj -52 -280 Td
+/F1 9 Tf 52 256 Td (**Status:** Addressed.) Tj -52 -256 Td
+/F2 13 Tf 52 232 Td (3. Evaluation Criteria and Tests) Tj -52 -232 Td
+/F2 11 Tf 52 198 Td (3.1 Evaluation Summary) Tj -52 -198 Td
+/F1 9 Tf 52 171 Td (| Test Area | Proposal Question | Result | Evidence |) Tj -52 -171 Td
+/F1 9 Tf 52 159 Td (|---|---|---:|---|) Tj -52 -159 Td
+/F1 9 Tf 52 147 Td (| Verifiability | Can a contribution record be traced through contributor, evidence) Tj -52 -147 Td
+/F1 9 Tf 52 135 Td (hash/URI, approver, and timestamp? | Pass | Amoy report stores contributor, hash, URI,) Tj -52 -135 Td
+/F1 9 Tf 52 123 Td (status, attestation count |) Tj -52 -123 Td
+/F1 9 Tf 52 111 Td (| Immutability | Can an approved contribution record be silently modified later? |) Tj -52 -111 Td
+/F1 9 Tf 52 99 Td (Pass | On-chain `reportHash` remains fixed; tampered local report fails verification |) Tj -52 -99 Td
+/F1 9 Tf 52 87 Td (| Authorization | Can only authorized users approve reports? | Pass | Contract test) Tj -52 -87 Td
+/F1 9 Tf 52 75 Td (blocks non-approver attestation |) Tj -52 -75 Td
+/F1 9 Tf 52 63 Td (| Approval mechanism | Does approval happen before finalization? | Pass | `finalize`) Tj -52 -63 Td
+ET
+endstream
+endobj
+10 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 9 0 R >>
+endobj
+11 0 obj
+<< /Length 3445 >>
+stream
+BT
+/F1 9 Tf 52 790 Td (requires threshold attestations |) Tj -52 -790 Td
+/F1 9 Tf 52 778 Td (| Duplicate prevention | Can the same evidence hash be submitted repeatedly? | Pass |) Tj -52 -778 Td
+/F1 9 Tf 52 766 Td (Contract test rejects duplicate report hash per repo |) Tj -52 -766 Td
+/F1 9 Tf 52 754 Td (| Soulbound restriction | Can the badge be transferred? | Pass | Contract test) Tj -52 -754 Td
+/F1 9 Tf 52 742 Td (verifies transfer revert; Amoy badge reports `locked: true` |) Tj -52 -742 Td
+/F1 9 Tf 52 730 Td (| Interface flow | Can users operate through an interface? | Pass for local prototype) Tj -52 -730 Td
+/F1 9 Tf 52 718 Td (| `poc web` dashboard provides wallet connect, verifier, actions, indexer |) Tj -52 -718 Td
+/F1 9 Tf 52 706 Td (| Membership control | Can non-members be blocked? | Partial | Dedicated member model) Tj -52 -706 Td
+/F1 9 Tf 52 694 Td (is not implemented; approver authorization exists |) Tj -52 -694 Td
+/F1 9 Tf 52 682 Td (| Task records | Are task IDs/categories/weights on-chain? | Partial | Task data is) Tj -52 -682 Td
+/F1 9 Tf 52 670 Td (represented off-chain in report-level metrics, not as on-chain task structs |) Tj -52 -670 Td
+/F1 9 Tf 52 658 Td (| IPFS evidence | Can report/metadata be pinned to IPFS? | Partial | Pinata/IPFS) Tj -52 -658 Td
+/F1 9 Tf 52 646 Td (support exists and previously worked; final Amoy demo used GitHub URI because supplied) Tj -52 -646 Td
+/F1 9 Tf 52 634 Td (JWT returned 401 |) Tj -52 -634 Td
+/F2 11 Tf 52 610 Td (3.2 Smart Contract Test Evidence) Tj -52 -610 Td
+/F1 9 Tf 52 583 Td (Command:) Tj -52 -583 Td
+/F1 9 Tf 52 547 Td (cd contracts) Tj -52 -547 Td
+/F1 9 Tf 52 535 Td (npm test) Tj -52 -535 Td
+/F1 9 Tf 52 499 Td (Observed result:) Tj -52 -499 Td
+/F1 9 Tf 52 463 Td (ContributionRegistry) Tj -52 -463 Td
+/F1 9 Tf 52 451 Td (  ? submits report and requires threshold attestations) Tj -52 -451 Td
+/F1 9 Tf 52 439 Td (  ? rejects duplicate report hashes per repo) Tj -52 -439 Td
+/F1 9 Tf 52 427 Td (  ? blocks non-approver attestation) Tj -52 -427 Td
+/F1 9 Tf 52 415 Td (  ? rejects repo approval sets that cannot satisfy the threshold) Tj -52 -415 Td
+/F1 9 Tf 52 403 Td (  ? rejects zero-address approvers) Tj -52 -403 Td
+/F1 9 Tf 52 391 Td (  ? prevents removing approvers below the active threshold) Tj -52 -391 Td
+/F1 9 Tf 52 379 Td (  ? blocks duplicate attestations from the same approver) Tj -52 -379 Td
+/F1 9 Tf 52 367 Td (  ? mints a non-transferable contribution badge when a report is finalized) Tj -52 -367 Td
+/F1 9 Tf 52 355 Td (  ? can finalize with a separate NFT metadata URI) Tj -52 -355 Td
+/F1 9 Tf 52 331 Td (9 passing) Tj -52 -331 Td
+/F1 9 Tf 52 295 Td (Interpretation:) Tj -52 -295 Td
+/F1 9 Tf 52 271 Td (? Authorization is enforced.) Tj -52 -271 Td
+/F1 9 Tf 52 259 Td (? Threshold finalization is enforced.) Tj -52 -259 Td
+/F1 9 Tf 52 247 Td (? Duplicate hashes are rejected.) Tj -52 -247 Td
+/F1 9 Tf 52 235 Td (? Approver threshold edge cases are protected.) Tj -52 -235 Td
+/F1 9 Tf 52 223 Td (? Badge minting works.) Tj -52 -223 Td
+/F1 9 Tf 52 211 Td (? Badge transfer restriction is tested.) Tj -52 -211 Td
+/F1 9 Tf 52 199 Td (? Separate NFT metadata URI is supported.) Tj -52 -199 Td
+/F2 11 Tf 52 175 Td (3.3 CLI Build Evidence) Tj -52 -175 Td
+/F1 9 Tf 52 148 Td (Command:) Tj -52 -148 Td
+/F1 9 Tf 52 112 Td (cd cli) Tj -52 -112 Td
+/F1 9 Tf 52 100 Td (npm run build) Tj -52 -100 Td
+/F1 9 Tf 52 64 Td (Observed result:) Tj -52 -64 Td
+ET
+endstream
+endobj
+12 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 11 0 R >>
+endobj
+13 0 obj
+<< /Length 2650 >>
+stream
+BT
+/F1 9 Tf 52 778 Td (> contribution-chain-cli@0.1.0 build) Tj -52 -778 Td
+/F1 9 Tf 52 766 Td (> tsc -p tsconfig.json) Tj -52 -766 Td
+/F1 9 Tf 52 730 Td (Interpretation:) Tj -52 -730 Td
+/F1 9 Tf 52 706 Td (? TypeScript CLI compiles successfully.) Tj -52 -706 Td
+/F1 9 Tf 52 694 Td (? CLI commands are available through the `poc` binary.) Tj -52 -694 Td
+/F2 11 Tf 52 670 Td (3.4 Report Generation Evidence) Tj -52 -670 Td
+/F1 9 Tf 52 643 Td (The demo report was generated from the project Git history.) Tj -52 -643 Td
+/F1 9 Tf 52 619 Td (Commit range:) Tj -52 -619 Td
+/F1 9 Tf 52 583 Td (from: ae0b8a29edce485fc11be0800803d27cef3aa086) Tj -52 -583 Td
+/F1 9 Tf 52 571 Td (to:   f42c1ba6cc04463defd1fa6a8ed35c0a77f2fc8f) Tj -52 -571 Td
+/F1 9 Tf 52 535 Td (Command:) Tj -52 -535 Td
+/F1 9 Tf 52 499 Td (poc scan \\) Tj -52 -499 Td
+/F1 9 Tf 52 487 Td (  --from ae0b8a29edce485fc11be0800803d27cef3aa086 \\) Tj -52 -487 Td
+/F1 9 Tf 52 475 Td (  --to f42c1ba6cc04463defd1fa6a8ed35c0a77f2fc8f \\) Tj -52 -475 Td
+/F1 9 Tf 52 463 Td (  --generated-at 2026-05-12T09:00:00.000Z \\) Tj -52 -463 Td
+/F1 9 Tf 52 451 Td (  --out report.json) Tj -52 -451 Td
+/F1 9 Tf 52 415 Td (Generated report format:) Tj -52 -415 Td
+/F1 9 Tf 52 379 Td (_type: https://in-toto.io/Statement/v1) Tj -52 -379 Td
+/F1 9 Tf 52 367 Td (predicateType: https://akadaltr.dev/attestation/contribution-report/v1) Tj -52 -367 Td
+/F1 9 Tf 52 355 Td (repoUrl: https://github.com/Daption-ciray/clichain.git) Tj -52 -355 Td
+/F1 9 Tf 52 343 Td (repoId: 1) Tj -52 -343 Td
+/F1 9 Tf 52 331 Td (contributors[0].identity.gitAuthorEmail: abdullahgokalpciray@ogr.iu.edu.tr) Tj -52 -331 Td
+/F1 9 Tf 52 319 Td (contributors[0].metrics.commits: 4) Tj -52 -319 Td
+/F1 9 Tf 52 307 Td (contributors[0].metrics.filesChanged: 62) Tj -52 -307 Td
+/F1 9 Tf 52 295 Td (contributors[0].metrics.additions: 15030) Tj -52 -295 Td
+/F1 9 Tf 52 283 Td (contributors[0].metrics.deletions: 1405) Tj -52 -283 Td
+/F1 9 Tf 52 271 Td (contributors[0].metrics.netLines: 13625) Tj -52 -271 Td
+/F1 9 Tf 52 235 Td (Report hash:) Tj -52 -235 Td
+/F1 9 Tf 52 199 Td (0x2ead7402e623729b39076c20777b1c8fa6e6a6fa36b04e2c792c0e3a5af0de95) Tj -52 -199 Td
+/F1 9 Tf 52 163 Td (Interpretation:) Tj -52 -163 Td
+/F1 9 Tf 52 139 Td (? The report uses a standard in-toto Statement v1 envelope.) Tj -52 -139 Td
+/F1 9 Tf 52 127 Td (? The report records a Git commit range and contribution metrics.) Tj -52 -127 Td
+/F1 9 Tf 52 115 Td (? The hash is deterministic for this generated report because `--generated-at` was) Tj -52 -115 Td
+/F1 9 Tf 52 103 Td (fixed.) Tj -52 -103 Td
+/F2 11 Tf 52 79 Td (3.5 Public Testnet Verification Evidence) Tj -52 -79 Td
+ET
+endstream
+endobj
+14 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 13 0 R >>
+endobj
+15 0 obj
+<< /Length 2369 >>
+stream
+BT
+/F1 9 Tf 52 790 Td (Command:) Tj -52 -790 Td
+/F1 9 Tf 52 754 Td (poc verify-chain --report-id 1 --file report.json) Tj -52 -754 Td
+/F1 9 Tf 52 718 Td (Observed result:) Tj -52 -718 Td
+/F1 9 Tf 52 682 Td (reportId: 1) Tj -52 -682 Td
+/F1 9 Tf 52 670 Td (status: 1) Tj -52 -670 Td
+/F1 9 Tf 52 658 Td (attestations: 1) Tj -52 -658 Td
+/F1 9 Tf 52 646 Td (uri: https://github.com/Daption-ciray/clichain) Tj -52 -646 Td
+/F1 9 Tf 52 634 Td (OK - file hash matches on-chain reportHash) Tj -52 -634 Td
+/F1 9 Tf 52 598 Td (Interpretation:) Tj -52 -598 Td
+/F1 9 Tf 52 574 Td (? The local report file hashes to the same value stored on Polygon Amoy.) Tj -52 -574 Td
+/F1 9 Tf 52 562 Td (? The report has been finalized.) Tj -52 -562 Td
+/F1 9 Tf 52 550 Td (? The report has one valid attestation, matching the threshold used for the easy demo.) Tj -52 -550 Td
+/F2 11 Tf 52 526 Td (3.6 Tamper-Resistance Evidence) Tj -52 -526 Td
+/F1 9 Tf 52 499 Td (A copy of `report.json` was modified by changing a metric value. The modified file was) Tj -52 -499 Td
+/F1 9 Tf 52 487 Td (verified against the original expected hash.) Tj -52 -487 Td
+/F1 9 Tf 52 463 Td (Command:) Tj -52 -463 Td
+/F1 9 Tf 52 427 Td (poc verify \\) Tj -52 -427 Td
+/F1 9 Tf 52 415 Td (  --expected-hash 0x2ead7402e623729b39076c20777b1c8fa6e6a6fa36b04e2c792c0e3a5af0de95 \\) Tj -52 -415 Td
+/F1 9 Tf 52 403 Td (  --file /private/tmp/tampered-report.json) Tj -52 -403 Td
+/F1 9 Tf 52 367 Td (Observed result:) Tj -52 -367 Td
+/F1 9 Tf 52 331 Td (FAIL - hash mismatch) Tj -52 -331 Td
+/F1 9 Tf 52 319 Td (expected: 0x2ead7402e623729b39076c20777b1c8fa6e6a6fa36b04e2c792c0e3a5af0de95) Tj -52 -319 Td
+/F1 9 Tf 52 307 Td (actual:   0x72c9ddd102f241ebd103b48e1f1ca1cf4d1bff0acaf497da46f15b0fbd6240a5) Tj -52 -307 Td
+/F1 9 Tf 52 271 Td (Interpretation:) Tj -52 -271 Td
+/F1 9 Tf 52 247 Td (? If the off-chain report is changed after submission, the hash no longer matches.) Tj -52 -247 Td
+/F1 9 Tf 52 235 Td (? This demonstrates tamper evidence, which is the main reason for anchoring the report) Tj -52 -235 Td
+/F1 9 Tf 52 223 Td (hash on-chain.) Tj -52 -223 Td
+/F2 11 Tf 52 199 Td (3.7 Soulbound Badge Evidence) Tj -52 -199 Td
+/F1 9 Tf 52 172 Td (Command:) Tj -52 -172 Td
+/F1 9 Tf 52 136 Td (poc badge --token-id 1) Tj -52 -136 Td
+/F1 9 Tf 52 100 Td (Observed result:) Tj -52 -100 Td
+/F1 9 Tf 52 64 Td (tokenId: 1) Tj -52 -64 Td
+ET
+endstream
+endobj
+16 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 15 0 R >>
+endobj
+17 0 obj
+<< /Length 4264 >>
+stream
+BT
+/F1 9 Tf 52 790 Td (owner: 0x9aC8Be516C08f6cB7A638fb07A76E135F5508629) Tj -52 -790 Td
+/F1 9 Tf 52 778 Td (reportId: 1) Tj -52 -778 Td
+/F1 9 Tf 52 766 Td (repoId: 1) Tj -52 -766 Td
+/F1 9 Tf 52 754 Td (reportHash: 0x2ead7402e623729b39076c20777b1c8fa6e6a6fa36b04e2c792c0e3a5af0de95) Tj -52 -754 Td
+/F1 9 Tf 52 742 Td (uri: https://github.com/Daption-ciray/clichain) Tj -52 -742 Td
+/F1 9 Tf 52 730 Td (reportUri: https://github.com/Daption-ciray/clichain) Tj -52 -730 Td
+/F1 9 Tf 52 718 Td (metadataUri: https://github.com/Daption-ciray/clichain) Tj -52 -718 Td
+/F1 9 Tf 52 706 Td (mintedAt: 1778610021) Tj -52 -706 Td
+/F1 9 Tf 52 694 Td (locked: true) Tj -52 -694 Td
+/F1 9 Tf 52 658 Td (Interpretation:) Tj -52 -658 Td
+/F1 9 Tf 52 634 Td (? A badge was minted after finalization.) Tj -52 -634 Td
+/F1 9 Tf 52 622 Td (? The badge is linked to the report hash.) Tj -52 -622 Td
+/F1 9 Tf 52 610 Td (? `locked: true` confirms the soulbound state.) Tj -52 -610 Td
+/F1 9 Tf 52 598 Td (? Smart contract tests also verify that transfer functions revert.) Tj -52 -598 Td
+/F2 13 Tf 52 574 Td (4. Proposal Coverage Matrix) Tj -52 -574 Td
+/F1 9 Tf 52 540 Td (| Proposal Feature | Current Implementation | Coverage |) Tj -52 -540 Td
+/F1 9 Tf 52 528 Td (|---|---|---:|) Tj -52 -528 Td
+/F1 9 Tf 52 516 Td (| Blockchain-backed contribution evidence | Report hash stored on Polygon Amoy | Full) Tj -52 -516 Td
+/F1 9 Tf 52 504 Td (|) Tj -52 -504 Td
+/F1 9 Tf 52 492 Td (| Timestamped records | `submittedAt` stored on-chain | Full |) Tj -52 -492 Td
+/F1 9 Tf 52 480 Td (| External verification | `verify-chain` compares local report hash with on-chain hash) Tj -52 -480 Td
+/F1 9 Tf 52 468 Td (| Full |) Tj -52 -468 Td
+/F1 9 Tf 52 456 Td (| Evidence hash / CID model | `reportHash`, `commitSha`, `uri` fields | Full |) Tj -52 -456 Td
+/F1 9 Tf 52 444 Td (| Authorized approval | repo approvers and threshold attestation | Full |) Tj -52 -444 Td
+/F1 9 Tf 52 432 Td (| Duplicate prevention | duplicate report hash rejected per repo | Full |) Tj -52 -432 Td
+/F1 9 Tf 52 420 Td (| Soulbound badge | non-transferable badge contract, `locked` state | Full |) Tj -52 -420 Td
+/F1 9 Tf 52 408 Td (| Web interface | local dashboard with wallet connect and indexer | Partial to Full) Tj -52 -408 Td
+/F1 9 Tf 52 396 Td (for demo |) Tj -52 -396 Td
+/F1 9 Tf 52 384 Td (| Project/task records | repo-level record implemented, task-level structs not) Tj -52 -384 Td
+/F1 9 Tf 52 372 Td (implemented | Partial |) Tj -52 -372 Td
+/F1 9 Tf 52 360 Td (| Member management | approver management implemented, full member roles not) Tj -52 -360 Td
+/F1 9 Tf 52 348 Td (implemented | Partial |) Tj -52 -348 Td
+/F1 9 Tf 52 336 Td (| Contribution profile | metrics in report, no full profile UI | Partial |) Tj -52 -336 Td
+/F1 9 Tf 52 324 Td (| IPFS storage | Pinata integration implemented; final Amoy URI used GitHub due JWT) Tj -52 -324 Td
+/F1 9 Tf 52 312 Td (401 | Partial |) Tj -52 -312 Td
+/F2 13 Tf 52 288 Td (5. Limitations and Honest Scope Boundary) Tj -52 -288 Td
+/F1 9 Tf 52 254 Td (The current system is a strong academic MVP, not a full SaaS product.) Tj -52 -254 Td
+/F1 9 Tf 52 230 Td (Remaining limitations:) Tj -52 -230 Td
+/F1 9 Tf 52 206 Td (? Task-level records are not stored as separate on-chain structs.) Tj -52 -206 Td
+/F1 9 Tf 52 194 Td (? Project member management is not fully implemented.) Tj -52 -194 Td
+/F1 9 Tf 52 182 Td (? Contribution profiles are represented in the report but not as a complete profile) Tj -52 -182 Td
+/F1 9 Tf 52 170 Td (UI.) Tj -52 -170 Td
+/F1 9 Tf 52 158 Td (? GitHub OAuth is not implemented.) Tj -52 -158 Td
+/F1 9 Tf 52 146 Td (? The dashboard is local-first, not hosted with production authentication.) Tj -52 -146 Td
+/F1 9 Tf 52 134 Td (? The final Amoy demo used a GitHub URI because the supplied Pinata JWT returned) Tj -52 -134 Td
+/F1 9 Tf 52 122 Td (`401`.) Tj -52 -122 Td
+/F1 9 Tf 52 110 Td (? The report metrics are Git-stat based and should not be treated as final grading) Tj -52 -110 Td
+/F1 9 Tf 52 98 Td (logic.) Tj -52 -98 Td
+/F1 9 Tf 52 74 Td (These limitations do not invalidate the main DSRM objective because the blockchain-) Tj -52 -74 Td
+/F1 9 Tf 52 62 Td (specific verification mechanism has been implemented and demonstrated.) Tj -52 -62 Td
+ET
+endstream
+endobj
+18 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 17 0 R >>
+endobj
+19 0 obj
+<< /Length 1328 >>
+stream
+BT
+/F2 13 Tf 52 790 Td (6. Final Conclusion) Tj -52 -790 Td
+/F1 9 Tf 52 756 Td (The project satisfies the core DSRM proposal claim: approved contribution evidence can) Tj -52 -756 Td
+/F1 9 Tf 52 744 Td (be represented off-chain, hashed, recorded on-chain, authorized through approver) Tj -52 -744 Td
+/F1 9 Tf 52 732 Td (attestations, finalized, verified later, and connected to a non-transferable) Tj -52 -732 Td
+/F1 9 Tf 52 720 Td (achievement badge.) Tj -52 -720 Td
+/F1 9 Tf 52 696 Td (The system now has concrete public testnet evidence on Polygon Amoy, passing smart) Tj -52 -696 Td
+/F1 9 Tf 52 684 Td (contract tests, a working CLI, a local product dashboard, and a GitHub repository) Tj -52 -684 Td
+/F1 9 Tf 52 672 Td (containing the implementation. The broader task/member/profile platform described in) Tj -52 -672 Td
+/F1 9 Tf 52 660 Td (the proposal remains future work, but the central blockchain artifact has been) Tj -52 -660 Td
+/F1 9 Tf 52 648 Td (designed, developed, demonstrated, and evaluated successfully.) Tj -52 -648 Td
+/F1 9 Tf 52 624 Td (Therefore, the project can be presented as a completed academic MVP that fulfills the) Tj -52 -624 Td
+/F1 9 Tf 52 612 Td (essential DSRM objectives while clearly documenting the remaining product-level) Tj -52 -612 Td
+/F1 9 Tf 52 600 Td (extensions.) Tj -52 -600 Td
+ET
+endstream
+endobj
+20 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 19 0 R >>
+endobj
+xref
+0 21
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000163 00000 n 
+0000000233 00000 n 
+0000000308 00000 n 
+0000004559 00000 n 
+0000004695 00000 n 
+0000008471 00000 n 
+0000008607 00000 n 
+0000012442 00000 n 
+0000012579 00000 n 
+0000016077 00000 n 
+0000016215 00000 n 
+0000018918 00000 n 
+0000019056 00000 n 
+0000021478 00000 n 
+0000021616 00000 n 
+0000025933 00000 n 
+0000026071 00000 n 
+0000027452 00000 n 
+trailer
+<< /Size 21 /Root 1 0 R >>
+startxref
+27590
+%%EOF
