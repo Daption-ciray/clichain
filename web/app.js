@@ -143,39 +143,39 @@ async function sendProof(method, args) {
 
 async function handleAction(action) {
   if (action === "createProject") {
-    await sendProof("createProject", [$("#projectName").value.trim(), $("#supervisor").value.trim()]);
+    await sendProof("createProject", [$("projectName").value.trim(), $("supervisor").value.trim()]);
   }
   if (action === "addMember") {
-    await sendProof("addMember", [Number($("#projectId").value), $("#memberAddress").value.trim()]);
+    await sendProof("addMember", [Number($("projectId").value), $("memberAddress").value.trim()]);
   }
   if (action === "createTask") {
     await sendProof("createTask", [
-      Number($("#projectId").value),
-      $("#taskTitle").value.trim(),
-      $("#taskCategory").value.trim(),
-      Number($("#taskWeight").value),
+      Number($("projectId").value),
+      $("taskTitle").value.trim(),
+      $("taskCategory").value.trim(),
+      Number($("taskWeight").value),
     ]);
   }
   if (action === "submitContribution") {
     await sendProof("submitContribution", [
-      Number($("#projectId").value),
-      Number($("#taskId").value),
-      $("#evidenceUri").value.trim(),
+      Number($("projectId").value),
+      Number($("taskId").value),
+      $("evidenceUri").value.trim(),
     ]);
   }
   if (action === "approveContribution") {
     await sendProof("approveContribution", [
-      Number($("#contributionId").value),
-      $("#badgeUri").value.trim(),
+      Number($("contributionId").value),
+      $("badgeUri").value.trim(),
     ]);
   }
   await load();
 }
 
 async function loadProfile() {
-  const user = $("#profileUser").value.trim();
-  const projectId = Number($("#projectId").value);
-  const category = $("#profileCategory").value.trim();
+  const user = $("profileUser").value.trim();
+  const projectId = Number($("projectId").value);
+  const category = $("profileCategory").value.trim();
   const [profile, categoryWeight] = await Promise.all([
     api(`/api/profile?projectId=${encodeURIComponent(projectId)}&user=${encodeURIComponent(user)}`),
     api(`/api/profile?projectId=${encodeURIComponent(projectId)}&user=${encodeURIComponent(user)}&category=${encodeURIComponent(category)}`),
@@ -184,12 +184,12 @@ async function loadProfile() {
 }
 
 async function loadBadge() {
-  const badge = await api(`/api/badge?tokenId=${encodeURIComponent($("#tokenId").value)}`);
+  const badge = await api(`/api/badge?tokenId=${encodeURIComponent($("tokenId").value)}`);
   $("badgeResult").textContent = JSON.stringify(badge, null, 2);
 }
 
 async function loadRepos() {
-  const owner = $("#ghOwner").value.trim();
+  const owner = $("ghOwner").value.trim();
   const repos = await api(`/api/github/repos?owner=${encodeURIComponent(owner)}`);
   $("repoList").innerHTML = repos.map((repo) => `
     <button class="choice" data-repo="${escapeHtml(repo.name)}" data-full-name="${escapeHtml(repo.fullName)}">
@@ -200,9 +200,9 @@ async function loadRepos() {
   $("githubOutput").innerHTML = `<pre>${escapeHtml(JSON.stringify({ connected: owner, repositories: repos.length }, null, 2))}</pre>`;
   document.querySelectorAll("[data-repo]").forEach((button) => {
     button.addEventListener("click", async () => {
-      $("#ghRepo").value = button.dataset.repo;
-      $("#ghFrom").value = "";
-      $("#ghTo").value = "";
+      $("ghRepo").value = button.dataset.repo;
+      $("ghFrom").value = "";
+      $("ghTo").value = "";
       document.querySelectorAll("[data-repo]").forEach((item) => item.classList.remove("selected"));
       button.classList.add("selected");
       await loadCommits();
@@ -211,8 +211,8 @@ async function loadRepos() {
 }
 
 async function loadCommits() {
-  const owner = $("#ghOwner").value.trim();
-  const repo = $("#ghRepo").value.trim();
+  const owner = $("ghOwner").value.trim();
+  const repo = $("ghRepo").value.trim();
   const commits = await api(`/api/github/commits?owner=${encodeURIComponent(owner)}&repo=${encodeURIComponent(repo)}`);
   $("commitList").innerHTML = commits.map((commit, index) => `
     <div class="commit-choice">
@@ -230,35 +230,35 @@ async function loadCommits() {
   $("githubOutput").innerHTML = `<pre>${escapeHtml(JSON.stringify({ repository: `${owner}/${repo}`, commits: commits.length }, null, 2))}</pre>`;
   document.querySelectorAll("[data-sha]").forEach((button) => {
     button.addEventListener("click", () => {
-      if (!$("#ghFrom").value) $("#ghFrom").value = button.dataset.sha;
-      else $("#ghTo").value = button.dataset.sha;
+      if (!$("ghFrom").value) $("ghFrom").value = button.dataset.sha;
+      else $("ghTo").value = button.dataset.sha;
     });
   });
   document.querySelectorAll("[data-from-sha]").forEach((button) => {
     button.addEventListener("click", () => {
-      $("#ghFrom").value = button.dataset.fromSha;
+      $("ghFrom").value = button.dataset.fromSha;
     });
   });
   document.querySelectorAll("[data-to-sha]").forEach((button) => {
     button.addEventListener("click", () => {
-      $("#ghTo").value = button.dataset.toSha;
+      $("ghTo").value = button.dataset.toSha;
     });
   });
 }
 
 async function generateGithubReport() {
   const body = {
-    owner: $("#ghOwner").value.trim(),
-    repo: $("#ghRepo").value.trim(),
-    from: $("#ghFrom").value.trim(),
-    to: $("#ghTo").value.trim(),
+    owner: $("ghOwner").value.trim(),
+    repo: $("ghRepo").value.trim(),
+    from: $("ghFrom").value.trim(),
+    to: $("ghTo").value.trim(),
   };
   const result = await api("/api/github/report", {
     method: "POST",
     body: JSON.stringify(body),
   });
-  $("#evidenceUri").value = `github://${body.owner}/${body.repo}/commit/${body.to || result.report.subject?.[0]?.digest?.gitTo || ""}`;
-  $("githubOutput").innerHTML = `<pre>${escapeHtml(JSON.stringify({ hash: result.hash, evidenceUri: $("#evidenceUri").value }, null, 2))}</pre>`;
+  $("evidenceUri").value = `github://${body.owner}/${body.repo}/commit/${body.to || result.report.subject?.[0]?.digest?.gitTo || ""}`;
+  $("githubOutput").innerHTML = `<pre>${escapeHtml(JSON.stringify({ hash: result.hash, evidenceUri: $("evidenceUri").value }, null, 2))}</pre>`;
 }
 
 function bind() {
