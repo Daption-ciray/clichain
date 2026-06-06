@@ -73,12 +73,16 @@ async function load() {
   $("network").textContent = `Chain ${chain.chainId} | Block ${chain.latestBlock}`;
   $("contractAddress").textContent = chain.contractAddress || "Not deployed";
   $("contractLink").href = chain.contractAddress ? `${chain.explorerUrl}/address/${chain.contractAddress}` : chain.explorerUrl;
-  $("summary").innerHTML = [
+  const summaryItems = [
     ["Network", chain.chainId === 137 ? "Polygon mainnet" : `Chain ${chain.chainId}`],
     ["Contract", chain.contractAddress || "not configured"],
     ["Projects", state.projects.length],
     ["Contributions", state.contributions.length],
-  ].map(([label, value]) => `<div class="stat"><div class="label">${label}</div><div class="value">${escapeHtml(value)}</div></div>`).join("");
+  ];
+  $("summary").innerHTML = `<div class="summary-table">
+    <div class="summary-row summary-header">${summaryItems.map(([label]) => `<div>${escapeHtml(label)}</div>`).join("")}</div>
+    <div class="summary-row">${summaryItems.map(([label, value]) => `<div class="${label === "Contract" ? "summary-contract" : ""}">${escapeHtml(value)}</div>`).join("")}</div>
+  </div>`;
 
   $("projectCount").textContent = `${state.projects.length} projects`;
   $("projectsTable").innerHTML = table(

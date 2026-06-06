@@ -577,10 +577,47 @@ pre {
 }
 
 .summary {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
+  display: block;
   margin-bottom: 18px;
+}
+
+.summary-table {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.summary-row {
+  display: grid;
+  grid-template-columns: 1fr minmax(360px, 1.6fr) 0.8fr 0.9fr;
+  min-width: 900px;
+}
+
+.summary-row > div {
+  min-width: 0;
+  padding: 18px;
+  border-right: 1px solid var(--line);
+  color: var(--ink);
+}
+
+.summary-row > div:last-child {
+  border-right: 0;
+}
+
+.summary-header > div {
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.summary-contract {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: "SFMono-Regular", Consolas, monospace;
+  color: var(--yellow-2);
 }
 
 .summary-card {
@@ -986,7 +1023,7 @@ td code {
   .feature-grid,
   .timeline,
   .use-grid,
-  .summary {
+  .summary-grid-legacy {
     grid-template-columns: repeat(2, 1fr);
   }
 }
