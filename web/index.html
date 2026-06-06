@@ -151,15 +151,26 @@
             <p class="eyebrow">Evidence helper</p>
             <h2>GitHub</h2>
           </div>
-          <button id="loadRepos" class="button primary compact" type="button">Load Repos</button>
+          <button id="connectGithub" class="button primary compact" type="button">Connect GitHub</button>
         </div>
         <div class="form-grid">
-          <label>Owner <input id="ghOwner" value="Daption-ciray" /></label>
-          <label>Repo <input id="ghRepo" value="clichain" /></label>
-          <label>From SHA <input id="ghFrom" placeholder="base commit" /></label>
-          <label>To SHA <input id="ghTo" placeholder="head commit" /></label>
+          <label>GitHub username <input id="ghOwner" value="Daption-ciray" /></label>
+          <label>Selected repo <input id="ghRepo" value="clichain" readonly /></label>
+          <label>From commit <input id="ghFrom" placeholder="select from commit list" readonly /></label>
+          <label>To commit <input id="ghTo" placeholder="select from commit list" readonly /></label>
+          <button id="loadRepos" class="button secondary compact" type="button">Load Repos</button>
           <button id="loadCommits" class="button secondary compact" type="button">Load Commits</button>
           <button id="generateGithubReport" class="button primary compact" type="button">Generate Evidence</button>
+        </div>
+        <div class="github-picker">
+          <div>
+            <p class="eyebrow">Repositories</p>
+            <div id="repoList" class="choice-list"></div>
+          </div>
+          <div>
+            <p class="eyebrow">Commits</p>
+            <div id="commitList" class="choice-list"></div>
+          </div>
         </div>
         <div id="githubOutput"></div>
       </div>

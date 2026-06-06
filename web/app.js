@@ -191,16 +191,21 @@ async function loadBadge() {
 async function loadRepos() {
   const owner = $("#ghOwner").value.trim();
   const repos = await api(`/api/github/repos?owner=${encodeURIComponent(owner)}`);
-  $("githubOutput").innerHTML = table(
-    ["Repo", "Default branch"],
-    repos.map((repo) => [
-      `<button class="secondary compact" data-repo="${escapeHtml(repo.name)}">${escapeHtml(repo.fullName)}</button>`,
-      escapeHtml(repo.defaultBranch),
-    ])
-  );
+  $("repoList").innerHTML = repos.map((repo) => `
+    <button class="choice" data-repo="${escapeHtml(repo.name)}" data-full-name="${escapeHtml(repo.fullName)}">
+      <strong>${escapeHtml(repo.name)}</strong>
+      <span>${escapeHtml(repo.defaultBranch)}</span>
+    </button>
+  `).join("");
+  $("githubOutput").innerHTML = `<pre>${escapeHtml(JSON.stringify({ connected: owner, repositories: repos.length }, null, 2))}</pre>`;
   document.querySelectorAll("[data-repo]").forEach((button) => {
-    button.addEventListener("click", () => {
+    button.addEventListener("click", async () => {
       $("#ghRepo").value = button.dataset.repo;
+      $("#ghFrom").value = "";
+      $("#ghTo").value = "";
+      document.querySelectorAll("[data-repo]").forEach((item) => item.classList.remove("selected"));
+      button.classList.add("selected");
+      await loadCommits();
     });
   });
 }
@@ -209,18 +214,34 @@ async function loadCommits() {
   const owner = $("#ghOwner").value.trim();
   const repo = $("#ghRepo").value.trim();
   const commits = await api(`/api/github/commits?owner=${encodeURIComponent(owner)}&repo=${encodeURIComponent(repo)}`);
-  $("githubOutput").innerHTML = table(
-    ["SHA", "Message", "Author"],
-    commits.map((commit) => [
-      `<button class="secondary compact" data-sha="${commit.sha}">${short(commit.sha)}</button>`,
-      escapeHtml(commit.message.split("\n")[0]),
-      escapeHtml(commit.author?.name || ""),
-    ])
-  );
+  $("commitList").innerHTML = commits.map((commit, index) => `
+    <div class="commit-choice">
+      <div>
+        <code>${escapeHtml(short(commit.sha))}</code>
+        <strong>${escapeHtml(commit.message.split("\n")[0])}</strong>
+        <span>${escapeHtml(commit.author?.name || "")}</span>
+      </div>
+      <div class="commit-actions">
+        <button class="secondary compact" data-from-sha="${commit.sha}">From</button>
+        <button class="primary compact" data-to-sha="${commit.sha}">${index === 0 ? "Use Latest" : "To"}</button>
+      </div>
+    </div>
+  `).join("");
+  $("githubOutput").innerHTML = `<pre>${escapeHtml(JSON.stringify({ repository: `${owner}/${repo}`, commits: commits.length }, null, 2))}</pre>`;
   document.querySelectorAll("[data-sha]").forEach((button) => {
     button.addEventListener("click", () => {
       if (!$("#ghFrom").value) $("#ghFrom").value = button.dataset.sha;
       else $("#ghTo").value = button.dataset.sha;
+    });
+  });
+  document.querySelectorAll("[data-from-sha]").forEach((button) => {
+    button.addEventListener("click", () => {
+      $("#ghFrom").value = button.dataset.fromSha;
+    });
+  });
+  document.querySelectorAll("[data-to-sha]").forEach((button) => {
+    button.addEventListener("click", () => {
+      $("#ghTo").value = button.dataset.toSha;
     });
   });
 }
@@ -243,6 +264,7 @@ async function generateGithubReport() {
 function bind() {
   $("refresh").addEventListener("click", load);
   $("connect").addEventListener("click", () => connectWallet().catch(alert));
+  $("connectGithub").addEventListener("click", () => loadRepos().catch(alert));
   $("loadProfile").addEventListener("click", () => loadProfile().catch((err) => $("profileResult").textContent = err.message));
   $("loadBadge").addEventListener("click", () => loadBadge().catch((err) => $("badgeResult").textContent = err.message));
   $("loadRepos").addEventListener("click", () => loadRepos().catch(alert));
