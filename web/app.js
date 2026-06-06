@@ -136,9 +136,23 @@ async function sendProof(method, args) {
     method: "POST",
     body: JSON.stringify({ method, args }),
   });
+  const txParams = { from: account, to: tx.to, data: tx.data };
+  try {
+    const estimatedGas = BigInt(await window.ethereum.request({
+      method: "eth_estimateGas",
+      params: [txParams],
+    }));
+    const gasWithBuffer = estimatedGas + (estimatedGas / 3n);
+    if (gasWithBuffer > 1_500_000n) {
+      throw new Error(`Gas estimate is unexpectedly high: ${gasWithBuffer.toString()}`);
+    }
+    txParams.gas = `0x${gasWithBuffer.toString(16)}`;
+  } catch (error) {
+    throw new Error(`Gas estimate failed. Check project/task IDs, membership and duplicate evidence URI. ${error.message || error}`);
+  }
   return window.ethereum.request({
     method: "eth_sendTransaction",
-    params: [{ from: account, to: tx.to, data: tx.data }],
+    params: [txParams],
   });
 }
 
