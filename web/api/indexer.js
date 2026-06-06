@@ -1,58 +1,81 @@
-const { REGISTRY_ADDRESS, asNumber, handleError, provider, registry, send } = require("./_shared");
+const { PROOF_CONTRACT_ADDRESS, asNumber, handleError, proof, provider, send } = require("./_shared");
 
 module.exports = async function handler(req, res) {
   try {
-    const contract = registry();
-    const nextReportId = asNumber(await contract.nextReportId());
-    const reports = [];
+    const contract = proof();
+    const [nextProjectId, nextTaskId, nextContributionId] = await Promise.all([
+      contract.nextProjectId(),
+      contract.nextTaskId(),
+      contract.nextContributionId()
+    ]);
 
-    for (let id = 1; id < nextReportId; id += 1) {
-      const report = await contract.reports(id);
-      if (asNumber(report.repoId) === 0) continue;
-      reports.push({
+    const projects = [];
+    for (let id = 1; id < asNumber(nextProjectId); id += 1) {
+      const project = await contract.projects(id);
+      if (!project.exists) continue;
+      projects.push({
         id,
-        repoId: asNumber(report.repoId),
-        contributor: report.contributor,
-        commitSha: report.commitSha,
-        reportHash: report.reportHash,
-        uri: report.uri,
-        policyId: report.policyId,
-        attestationCount: asNumber(report.attestationCount),
-        status: asNumber(report.status),
-        submittedAt: asNumber(report.submittedAt)
+        name: project.name,
+        owner: project.owner,
+        supervisor: project.supervisor,
+        memberCount: asNumber(project.memberCount),
+        taskCount: asNumber(project.taskCount)
+      });
+    }
+
+    const tasks = [];
+    for (let id = 1; id < asNumber(nextTaskId); id += 1) {
+      const task = await contract.tasks(id);
+      if (!task.exists) continue;
+      tasks.push({
+        id,
+        projectId: asNumber(task.projectId),
+        title: task.title,
+        category: task.category,
+        weight: asNumber(task.weight)
+      });
+    }
+
+    const contributions = [];
+    for (let id = 1; id < asNumber(nextContributionId); id += 1) {
+      const contribution = await contract.contributions(id);
+      if (asNumber(contribution.submittedAt) === 0) continue;
+      contributions.push({
+        id,
+        projectId: asNumber(contribution.projectId),
+        taskId: asNumber(contribution.taskId),
+        contributor: contribution.contributor,
+        evidenceUri: contribution.evidenceUri,
+        evidenceHash: contribution.evidenceHash,
+        approver: contribution.approver,
+        status: asNumber(contribution.status),
+        submittedAt: asNumber(contribution.submittedAt),
+        approvedAt: asNumber(contribution.approvedAt),
+        badgeTokenId: asNumber(contribution.badgeTokenId)
       });
     }
 
     let events = [];
     try {
       const currentBlock = await provider().getBlockNumber();
-      const fromBlock = Math.max(0, currentBlock - 100);
       const logs = await provider().getLogs({
-        address: REGISTRY_ADDRESS,
-        fromBlock,
+        address: PROOF_CONTRACT_ADDRESS,
+        fromBlock: Math.max(0, currentBlock - 500),
         toBlock: "latest"
       });
       events = logs.slice(-40).map((log) => {
         try {
           const parsed = contract.interface.parseLog(log);
-          return {
-            blockNumber: log.blockNumber,
-            name: parsed.name,
-            txHash: log.transactionHash
-          };
+          return { blockNumber: log.blockNumber, name: parsed.name, txHash: log.transactionHash };
         } catch {
-          return {
-            blockNumber: log.blockNumber,
-            name: "Unknown",
-            txHash: log.transactionHash
-          };
+          return { blockNumber: log.blockNumber, name: "Unknown", txHash: log.transactionHash };
         }
       });
     } catch {
       events = [];
     }
 
-    send(res, 200, { reports, events });
+    send(res, 200, { projects, tasks, contributions, events });
   } catch (error) {
     handleError(res, error);
   }

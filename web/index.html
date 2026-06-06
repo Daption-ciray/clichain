@@ -13,9 +13,9 @@
       <span>Contribution Chain</span>
     </a>
     <nav class="nav">
-      <a href="#reports">Reports</a>
-      <a href="#verify">Verify</a>
-      <a href="#badge">Badge</a>
+      <a href="#projects">Projects</a>
+      <a href="#actions">Actions</a>
+      <a href="#profile">Profile</a>
       <a href="#github">GitHub</a>
     </nav>
     <div class="actions">
@@ -27,87 +27,119 @@
   <main>
     <section class="hero">
       <div class="hero-copy">
-        <p class="eyebrow">Blockchain contribution integrity</p>
+        <p class="eyebrow">Polygon mainnet contribution integrity</p>
         <h1>Proof of Contribution</h1>
         <p class="lead">
-          Git katkı raporlarının hash değerlerini zincire kaydeden, yetkili onaylarla finalize eden
-          ve soulbound badge üreten akademik MVP.
+          Project, task, member, contribution evidence, approval, profile and soulbound badge flow
+          for verifiable team contribution records.
         </p>
         <div class="hero-actions">
           <a class="button primary" href="https://github.com/Daption-ciray/clichain" target="_blank" rel="noreferrer">View repo</a>
-          <a class="button secondary" href="https://amoy.polygonscan.com/address/0x985d88E8a3b632bCc45e56fDf7F3918f4DEd2ab2" target="_blank" rel="noreferrer">Contract</a>
+          <a id="contractLink" class="button secondary" href="https://polygonscan.com" target="_blank" rel="noreferrer">Contract</a>
         </div>
       </div>
       <aside class="hero-card">
-        <span class="card-kicker">Polygon Amoy</span>
-        <strong>ContributionRegistry</strong>
-        <code>0x985d88E8a3b632bCc45e56fDf7F3918f4DEd2ab2</code>
+        <span class="card-kicker">Polygon Mainnet</span>
+        <strong>ProofOfContribution</strong>
+        <code id="contractAddress">Waiting for deployment</code>
         <span id="network">Loading network...</span>
       </aside>
     </section>
 
     <section class="summary" id="summary"></section>
 
-    <section class="layout" id="reports">
+    <section class="layout" id="projects">
       <div class="panel">
         <div class="panel-head">
           <div>
             <p class="eyebrow">On-chain state</p>
-            <h2>Reports</h2>
+            <h2>Projects</h2>
           </div>
-          <span id="reportCount"></span>
+          <span id="projectCount"></span>
         </div>
-        <div id="reportsTable"></div>
+        <div id="projectsTable"></div>
       </div>
 
       <div class="panel">
         <div class="panel-head">
           <div>
-            <p class="eyebrow">Registry</p>
-            <h2>Actions</h2>
+            <p class="eyebrow">Task registry</p>
+            <h2>Tasks</h2>
+          </div>
+          <span id="taskCount"></span>
+        </div>
+        <div id="tasksTable"></div>
+      </div>
+    </section>
+
+    <section class="layout" id="actions">
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Project setup</p>
+            <h2>Create project, members and tasks</h2>
           </div>
           <span id="wallet"></span>
         </div>
         <div class="form-grid">
-          <label>Name <input id="repoName" value="demo-repo" /></label>
-          <label>Approvers <input id="approvers" placeholder="0xabc,0xdef" /></label>
-          <label>Threshold <input id="threshold" value="1" /></label>
-          <button class="button primary compact" data-action="createRepo">Create Repo</button>
-          <label>Commit SHA <input id="submitCommit" placeholder="40 hex commit SHA" /></label>
-          <label>Report hash <input id="submitHash" placeholder="0x..." /></label>
-          <label>Report URI <input id="submitUri" value="ipfs://contribution-report" /></label>
-          <button class="button primary compact" data-action="submitReport">Submit Report</button>
-          <label>Report ID <input id="reportId" value="1" /></label>
-          <button class="button primary compact" data-action="attest">Attest</button>
-          <label>Badge metadata URI <input id="badgeUri" placeholder="ipfs://metadata-cid" /></label>
-          <button class="button primary compact" data-action="finalize">Finalize</button>
+          <label>Project name <input id="projectName" value="Course project" /></label>
+          <label>Supervisor <input id="supervisor" placeholder="0x supervisor wallet" /></label>
+          <button class="button primary compact" data-action="createProject">Create Project</button>
+          <label>Project ID <input id="projectId" value="1" /></label>
+          <label>Member wallet <input id="memberAddress" placeholder="0x member wallet" /></label>
+          <button class="button primary compact" data-action="addMember">Add Member</button>
+          <label>Task title <input id="taskTitle" value="Smart contract implementation" /></label>
+          <label>Category <input id="taskCategory" value="code" /></label>
+          <label>Weight <input id="taskWeight" value="40" /></label>
+          <button class="button primary compact" data-action="createTask">Create Task</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Contribution flow</p>
+            <h2>Submit and approve evidence</h2>
+          </div>
+        </div>
+        <div class="form-grid">
+          <label>Task ID <input id="taskId" value="1" /></label>
+          <label>Evidence URI / hash <input id="evidenceUri" value="ipfs://contribution-evidence" /></label>
+          <button class="button primary compact" data-action="submitContribution">Submit Contribution</button>
+          <label>Contribution ID <input id="contributionId" value="1" /></label>
+          <label>Badge metadata URI <input id="badgeUri" value="ipfs://badge-metadata" /></label>
+          <button class="button primary compact" data-action="approveContribution">Approve Contribution</button>
         </div>
       </div>
     </section>
 
-    <section class="layout" id="verify">
+    <section class="layout" id="profile">
       <div class="panel">
         <div class="panel-head">
           <div>
-            <p class="eyebrow">Tamper check</p>
-            <h2>Verifier</h2>
+            <p class="eyebrow">Pending and approved evidence</p>
+            <h2>Contributions</h2>
           </div>
-          <button id="verifyBtn" class="button primary compact" type="button">Verify</button>
+          <span id="contributionCount"></span>
         </div>
-        <label>Expected hash <input id="expectedHash" placeholder="0x..." /></label>
-        <textarea id="reportJson" spellcheck="false" placeholder="Paste report.json here"></textarea>
-        <pre id="verifyResult"></pre>
+        <div id="contributionsTable"></div>
       </div>
 
-      <div class="panel" id="badge">
+      <div class="panel">
         <div class="panel-head">
           <div>
-            <p class="eyebrow">Soulbound NFT</p>
-            <h2>Badge</h2>
+            <p class="eyebrow">Contribution profile</p>
+            <h2>Profile and badge</h2>
           </div>
-          <button id="loadBadge" class="button primary compact" type="button">Load</button>
+          <button id="loadProfile" class="button primary compact" type="button">Load Profile</button>
         </div>
-        <label>Token ID <input id="tokenId" value="1" /></label>
+        <div class="form-grid">
+          <label>User wallet <input id="profileUser" placeholder="0x user wallet" /></label>
+          <label>Category <input id="profileCategory" value="code" /></label>
+          <label>Token ID <input id="tokenId" value="1" /></label>
+          <button id="loadBadge" class="button secondary compact" type="button">Load Badge</button>
+        </div>
+        <pre id="profileResult"></pre>
         <pre id="badgeResult"></pre>
       </div>
     </section>
@@ -116,18 +148,18 @@
       <div class="panel">
         <div class="panel-head">
           <div>
-            <p class="eyebrow">Report generation</p>
+            <p class="eyebrow">Evidence helper</p>
             <h2>GitHub</h2>
           </div>
           <button id="loadRepos" class="button primary compact" type="button">Load Repos</button>
         </div>
         <div class="form-grid">
-          <label>Owner <input id="ghOwner" placeholder="openai" /></label>
-          <label>Repo <input id="ghRepo" placeholder="repo-name" /></label>
+          <label>Owner <input id="ghOwner" value="Daption-ciray" /></label>
+          <label>Repo <input id="ghRepo" value="clichain" /></label>
           <label>From SHA <input id="ghFrom" placeholder="base commit" /></label>
           <label>To SHA <input id="ghTo" placeholder="head commit" /></label>
           <button id="loadCommits" class="button secondary compact" type="button">Load Commits</button>
-          <button id="generateGithubReport" class="button primary compact" type="button">Generate Report</button>
+          <button id="generateGithubReport" class="button primary compact" type="button">Generate Evidence</button>
         </div>
         <div id="githubOutput"></div>
       </div>

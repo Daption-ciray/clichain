@@ -1,45 +1,45 @@
 const { ethers } = require("ethers");
 const crypto = require("crypto");
 
-const RPC_URL = process.env.POLYGON_AMOY_RPC_URL || "https://rpc-amoy.polygon.technology";
-const REGISTRY_ADDRESS = process.env.REGISTRY_ADDRESS || "0x985d88E8a3b632bCc45e56fDf7F3918f4DEd2ab2";
-const BADGE_ADDRESS = process.env.BADGE_ADDRESS || "0xc9AdFbC3B3652e8d4252223EebAb3d78a8335F3c";
-const REPO_ID = Number(process.env.REPO_ID || "1");
-const POLICY_ID = process.env.POLICY_ID || "contribution-chain-v1";
+const CHAIN_ID = Number(process.env.CHAIN_ID || "137");
+const RPC_URL = process.env.POLYGON_MAINNET_RPC_URL || process.env.POLYGON_RPC_URL || "https://polygon-bor-rpc.publicnode.com";
+const EXPLORER_URL = process.env.EXPLORER_URL || "https://polygonscan.com";
+const PROOF_CONTRACT_ADDRESS = process.env.PROOF_CONTRACT_ADDRESS || process.env.REGISTRY_ADDRESS || "0x0e0e36378e7B8fE8F7743A10e9e942Bd6A2b04A7";
 
-const registryAbi = [
-  "function nextRepoId() view returns (uint256)",
-  "function nextReportId() view returns (uint256)",
-  "function reports(uint256) view returns (uint256 repoId,address contributor,bytes32 commitSha,bytes32 reportHash,string uri,string policyId,uint32 attestationCount,uint8 status,uint64 submittedAt)",
-  "function createRepo(string name,address[] approvers,uint8 threshold)",
-  "function attest(uint256 reportId)",
-  "function finalize(uint256 reportId)",
-  "function finalizeWithBadgeUri(uint256 reportId,string badgeUri)",
-  "function submitReport(uint256 repoId,bytes32 commitSha,bytes32 reportHash,string uri,string policyId)",
-  "event RepoCreated(uint256 indexed repoId,address indexed owner,uint8 threshold,string name)",
-  "event ReportSubmitted(uint256 indexed reportId,uint256 indexed repoId,address indexed contributor,bytes32 commitSha,bytes32 reportHash,string uri,string policyId)",
-  "event ReportAttested(uint256 indexed reportId,uint256 indexed repoId,address indexed approver)",
-  "event ReportFinalized(uint256 indexed reportId,uint256 indexed repoId,uint32 attestationCount)",
-  "event ReportDisputed(uint256 indexed reportId,uint256 indexed repoId,bytes32 reasonHash)"
-];
-
-const badgeAbi = [
+const proofAbi = [
+  "function nextProjectId() view returns (uint256)",
+  "function nextTaskId() view returns (uint256)",
+  "function nextContributionId() view returns (uint256)",
+  "function nextTokenId() view returns (uint256)",
+  "function projects(uint256) view returns (string name,address owner,address supervisor,uint32 memberCount,uint32 taskCount,bool exists)",
+  "function tasks(uint256) view returns (uint256 projectId,string title,string category,uint32 weight,bool exists)",
+  "function contributions(uint256) view returns (uint256 projectId,uint256 taskId,address contributor,string evidenceUri,bytes32 evidenceHash,address approver,uint8 status,uint64 submittedAt,uint64 approvedAt,uint256 badgeTokenId)",
+  "function badges(uint256) view returns (uint256 contributionId,uint256 projectId,uint256 taskId,bytes32 evidenceHash,string metadataUri,uint64 mintedAt)",
   "function ownerOf(uint256 tokenId) view returns (address)",
   "function tokenURI(uint256 tokenId) view returns (string)",
   "function locked(uint256 tokenId) view returns (bool)",
-  "function badges(uint256) view returns (uint256 reportId,uint256 repoId,bytes32 reportHash,string reportUri,string metadataUri,uint64 mintedAt)"
+  "function viewContributionProfile(uint256 projectId,address user) view returns (uint256 totalWeight,uint256 approvedContributions,uint256 badgeCount)",
+  "function categoryWeightOf(uint256 projectId,address user,string category) view returns (uint256)",
+  "function createProject(string projectName,address supervisor)",
+  "function addMember(uint256 projectId,address member)",
+  "function createTask(uint256 projectId,string title,string category,uint32 weight)",
+  "function submitContribution(uint256 projectId,uint256 taskId,string evidenceUri)",
+  "function approveContribution(uint256 contributionId,string badgeUri)",
+  "event ProjectCreated(uint256 indexed projectId,address indexed owner,address indexed supervisor,string name)",
+  "event MemberAdded(uint256 indexed projectId,address indexed member)",
+  "event TaskCreated(uint256 indexed projectId,uint256 indexed taskId,string title,string category,uint32 weight)",
+  "event ContributionSubmitted(uint256 indexed contributionId,uint256 indexed projectId,uint256 indexed taskId,address contributor,bytes32 evidenceHash,string evidenceUri)",
+  "event ContributionApproved(uint256 indexed contributionId,uint256 indexed projectId,address indexed approver,uint256 badgeTokenId)",
+  "event BadgeMinted(uint256 indexed tokenId,address indexed recipient,uint256 indexed contributionId,uint256 projectId,uint256 taskId,bytes32 evidenceHash,string metadataUri)"
 ];
 
 function provider() {
   return new ethers.JsonRpcProvider(RPC_URL);
 }
 
-function registry() {
-  return new ethers.Contract(REGISTRY_ADDRESS, registryAbi, provider());
-}
-
-function badge() {
-  return new ethers.Contract(BADGE_ADDRESS, badgeAbi, provider());
+function proof() {
+  if (!PROOF_CONTRACT_ADDRESS) throw new Error("PROOF_CONTRACT_ADDRESS is not configured");
+  return new ethers.Contract(PROOF_CONTRACT_ADDRESS, proofAbi, provider());
 }
 
 function send(res, status, body) {
@@ -77,17 +77,15 @@ function asNumber(value) {
 }
 
 module.exports = {
-  BADGE_ADDRESS,
-  POLICY_ID,
-  REGISTRY_ADDRESS,
-  REPO_ID,
+  CHAIN_ID,
+  EXPLORER_URL,
+  PROOF_CONTRACT_ADDRESS,
   asNumber,
-  badge,
   handleError,
+  proof,
+  proofAbi,
   provider,
   readJson,
-  registry,
-  registryAbi,
   reportHash,
   send
 };

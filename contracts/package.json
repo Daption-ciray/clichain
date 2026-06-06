@@ -7,7 +7,10 @@
     "test": "hardhat test",
     "node": "hardhat node",
     "deploy:local": "hardhat run scripts/deploy.ts --network localhost",
-    "deploy:amoy": "hardhat run scripts/deploy.ts --network amoy"
+    "deploy:amoy": "hardhat run scripts/deploy.ts --network amoy",
+    "deploy-proof:local": "hardhat run scripts/deploy-proof.ts --network localhost",
+    "deploy-proof:amoy": "hardhat run scripts/deploy-proof.ts --network amoy",
+    "deploy-proof:polygon": "hardhat run scripts/deploy-proof.ts --network polygon"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",

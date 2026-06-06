@@ -21,14 +21,19 @@ Deploy edilmiş demo URL:
 - https://web-weld-five-32.vercel.app/
 
 Akıllı kontrat kaynak kodları:
+- `contracts/contracts/ProofOfContribution.sol`
 - `contracts/contracts/ContributionRegistry.sol`
 - `contracts/contracts/ContributionBadge.sol`
+
+Polygon mainnet kontrat adresi:
+- ProofOfContribution: `0x0e0e36378e7B8fE8F7743A10e9e942Bd6A2b04A7`
 
 Polygon Amoy testnet kontrat adresleri:
 - ContributionRegistry: `0x985d88E8a3b632bCc45e56fDf7F3918f4DEd2ab2`
 - ContributionBadge: `0xc9AdFbC3B3652e8d4252223EebAb3d78a8335F3c`
 
 Explorer bağlantıları:
+- https://polygonscan.com/address/0x0e0e36378e7B8fE8F7743A10e9e942Bd6A2b04A7
 - https://amoy.polygonscan.com/address/0x985d88E8a3b632bCc45e56fDf7F3918f4DEd2ab2
 - https://amoy.polygonscan.com/address/0xc9AdFbC3B3652e8d4252223EebAb3d78a8335F3c
 

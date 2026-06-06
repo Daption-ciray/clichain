@@ -1,10 +1,10 @@
-const { asNumber, badge, handleError, send } = require("./_shared");
+const { asNumber, handleError, proof, send } = require("./_shared");
 
 module.exports = async function handler(req, res) {
   try {
     const url = new URL(req.url, `https://${req.headers.host || "localhost"}`);
     const tokenId = Number(url.searchParams.get("tokenId") || "1");
-    const contract = badge();
+    const contract = proof();
     const [owner, tokenURI, locked, data] = await Promise.all([
       contract.ownerOf(tokenId),
       contract.tokenURI(tokenId),
@@ -17,10 +17,10 @@ module.exports = async function handler(req, res) {
       owner,
       tokenURI,
       locked,
-      reportId: asNumber(data.reportId),
-      repoId: asNumber(data.repoId),
-      reportHash: data.reportHash,
-      reportUri: data.reportUri,
+      contributionId: asNumber(data.contributionId),
+      projectId: asNumber(data.projectId),
+      taskId: asNumber(data.taskId),
+      evidenceHash: data.evidenceHash,
       metadataUri: data.metadataUri,
       mintedAt: asNumber(data.mintedAt)
     });
