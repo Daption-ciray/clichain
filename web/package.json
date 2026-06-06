@@ -1,0 +1,8 @@
+{
+  "name": "contribution-chain-web",
+  "private": true,
+  "version": "0.1.0",
+  "dependencies": {
+    "ethers": "^6.13.2"
+  }
+}

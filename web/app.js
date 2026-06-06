@@ -6,6 +6,7 @@ const $ = (id) => document.getElementById(id);
 const statusName = ["Pending", "Finalized", "Disputed"];
 const short = (value) => value ? `${String(value).slice(0, 10)}...${String(value).slice(-8)}` : "";
 const escapeHtml = (value) => String(value ?? "").replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+const AMOY_CHAIN_ID = "0x13882";
 const demo = {
   chain: {
     chainId: "80002",
@@ -109,9 +110,43 @@ async function connectWallet() {
   $("connect").textContent = short(account);
 }
 
+async function ensureAmoyNetwork() {
+  if (!window.ethereum) throw new Error("No wallet found. Install MetaMask.");
+  const chainId = await window.ethereum.request({ method: "eth_chainId" });
+  if (chainId === AMOY_CHAIN_ID) return;
+
+  try {
+    await window.ethereum.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: AMOY_CHAIN_ID }],
+    });
+  } catch (error) {
+    if (error.code !== 4902) throw error;
+    await window.ethereum.request({
+      method: "wallet_addEthereumChain",
+      params: [{
+        chainId: AMOY_CHAIN_ID,
+        chainName: "Polygon Amoy",
+        nativeCurrency: { name: "POL", symbol: "POL", decimals: 18 },
+        rpcUrls: ["https://rpc-amoy.polygon.technology"],
+        blockExplorerUrls: ["https://amoy.polygonscan.com"],
+      }],
+    });
+  }
+}
+
+function commitToBytes32(value) {
+  const clean = value.trim().replace(/^0x/, "");
+  if (!/^[0-9a-fA-F]{40}$/.test(clean) && !/^[0-9a-fA-F]{64}$/.test(clean)) {
+    throw new Error("Commit SHA must be 40 or 64 hex characters.");
+  }
+  return `0x${clean.padStart(64, "0")}`;
+}
+
 async function sendRegistry(method, args) {
   if (demoMode) throw new Error("This Vercel build is a static demo. Run the local dashboard for live wallet transactions.");
   if (!account) await connectWallet();
+  await ensureAmoyNetwork();
   const tx = await api("/api/calldata", {
     method: "POST",
     body: JSON.stringify({ method, args }),
@@ -127,6 +162,15 @@ async function handleAction(action) {
     const approvers = $("approvers").value.split(",").map((x) => x.trim()).filter(Boolean);
     const threshold = Number($("threshold").value);
     await sendRegistry("createRepo", [$("repoName").value, approvers, threshold]);
+  }
+  if (action === "submitReport") {
+    await sendRegistry("submitReport", [
+      Number(config?.repoId || 1),
+      commitToBytes32($("submitCommit").value),
+      $("submitHash").value.trim(),
+      $("submitUri").value.trim(),
+      config?.policyId || "contribution-chain-v1",
+    ]);
   }
   if (action === "attest") {
     await sendRegistry("attest", [Number($("reportId").value)]);
@@ -256,6 +300,8 @@ async function generateGithubReport() {
   });
   $("reportJson").value = JSON.stringify(result.report, null, 2);
   $("expectedHash").value = result.hash;
+  $("submitHash").value = result.hash;
+  $("submitCommit").value = body.to;
   $("githubOutput").innerHTML = `<pre>${escapeHtml(JSON.stringify({ hash: result.hash }, null, 2))}</pre>`;
 }
 

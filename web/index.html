@@ -71,8 +71,12 @@
         <div class="form-grid">
           <label>Name <input id="repoName" value="demo-repo" /></label>
           <label>Approvers <input id="approvers" placeholder="0xabc,0xdef" /></label>
-          <label>Threshold <input id="threshold" value="2" /></label>
+          <label>Threshold <input id="threshold" value="1" /></label>
           <button class="button primary compact" data-action="createRepo">Create Repo</button>
+          <label>Commit SHA <input id="submitCommit" placeholder="40 hex commit SHA" /></label>
+          <label>Report hash <input id="submitHash" placeholder="0x..." /></label>
+          <label>Report URI <input id="submitUri" value="ipfs://contribution-report" /></label>
+          <button class="button primary compact" data-action="submitReport">Submit Report</button>
           <label>Report ID <input id="reportId" value="1" /></label>
           <button class="button primary compact" data-action="attest">Attest</button>
           <label>Badge metadata URI <input id="badgeUri" placeholder="ipfs://metadata-cid" /></label>
