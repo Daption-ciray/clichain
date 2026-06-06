@@ -6,7 +6,7 @@ const $ = (id) => document.getElementById(id);
 const POLYGON_CHAIN_ID = "0x89";
 const contributionStatus = ["Pending", "Approved"];
 const short = (value) => value ? `${String(value).slice(0, 10)}...${String(value).slice(-8)}` : "";
-const escapeHtml = (value) => String(value ?? "").replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+const escapeHtml = (value) => String(value ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;" }[c]));
 
 async function api(path, options) {
   const response = await fetch(path, {
@@ -19,11 +19,48 @@ async function api(path, options) {
   return body;
 }
 
+function detailPanel(details) {
+  if (!details?.length) return "";
+  return `<div class="row-details">${details.map(({ label, value, copy = true }) => `
+    <div class="detail-line">
+      <span>${escapeHtml(label)}</span>
+      <code>${escapeHtml(value)}</code>
+      ${copy ? `<button class="copy-button" type="button" data-copy="${escapeHtml(value)}">Copy</button>` : ""}
+    </div>
+  `).join("")}</div>`;
+}
+
 function table(headers, rows) {
   if (!rows.length) return '<p class="empty">No data yet.</p>';
   return `<div class="table-scroll"><table><thead><tr>${headers.map((h) => `<th>${h}</th>`).join("")}</tr></thead><tbody>${rows
-    .map((row) => `<tr>${row.map((cell) => `<td>${cell}</td>`).join("")}</tr>`)
+    .map((row, index) => {
+      const cells = Array.isArray(row) ? row : row.cells;
+      const details = Array.isArray(row) ? [] : row.details;
+      return `<tr class="data-row" data-detail-row="${index}">${cells.map((cell) => `<td>${cell}</td>`).join("")}</tr>
+        ${details?.length ? `<tr class="detail-row" data-detail="${index}"><td colspan="${headers.length}">${detailPanel(details)}</td></tr>` : ""}`;
+    })
     .join("")}</tbody></table></div>`;
+}
+
+function bindTableDetails(root = document) {
+  root.querySelectorAll("[data-detail-row]").forEach((row) => {
+    row.addEventListener("click", () => {
+      const detail = row.parentElement.querySelector(`[data-detail="${row.dataset.detailRow}"]`);
+      if (!detail) return;
+      detail.classList.toggle("open");
+    });
+  });
+  root.querySelectorAll("[data-copy]").forEach((button) => {
+    button.addEventListener("click", async (event) => {
+      event.stopPropagation();
+      const value = button.dataset.copy;
+      await navigator.clipboard.writeText(value);
+      button.textContent = "Copied";
+      window.setTimeout(() => {
+        button.textContent = "Copy";
+      }, 1200);
+    });
+  });
 }
 
 async function load() {
@@ -46,51 +83,90 @@ async function load() {
   $("projectCount").textContent = `${state.projects.length} projects`;
   $("projectsTable").innerHTML = table(
     ["ID", "Name", "Owner", "Supervisor", "Members", "Tasks"],
-    state.projects.map((project) => [
-      project.id,
-      escapeHtml(project.name),
-      `<code>${escapeHtml(short(project.owner))}</code>`,
-      `<code>${escapeHtml(short(project.supervisor))}</code>`,
-      project.memberCount,
-      project.taskCount,
-    ])
+    state.projects.map((project) => ({
+      cells: [
+        project.id,
+        escapeHtml(project.name),
+        `<code title="${escapeHtml(project.owner)}">${escapeHtml(short(project.owner))}</code>`,
+        `<code title="${escapeHtml(project.supervisor)}">${escapeHtml(short(project.supervisor))}</code>`,
+        project.memberCount,
+        project.taskCount,
+      ],
+      details: [
+        { label: "Project ID", value: project.id, copy: false },
+        { label: "Name", value: project.name },
+        { label: "Owner", value: project.owner },
+        { label: "Supervisor", value: project.supervisor },
+        { label: "Members", value: project.memberCount, copy: false },
+        { label: "Tasks", value: project.taskCount, copy: false },
+      ]
+    }))
   );
 
   $("taskCount").textContent = `${state.tasks.length} tasks`;
   $("tasksTable").innerHTML = table(
     ["ID", "Project", "Title", "Category", "Weight"],
-    state.tasks.map((task) => [
-      task.id,
-      task.projectId,
-      escapeHtml(task.title),
-      escapeHtml(task.category),
-      task.weight,
-    ])
+    state.tasks.map((task) => ({
+      cells: [
+        task.id,
+        task.projectId,
+        escapeHtml(task.title),
+        escapeHtml(task.category),
+        task.weight,
+      ],
+      details: [
+        { label: "Task ID", value: task.id, copy: false },
+        { label: "Project ID", value: task.projectId, copy: false },
+        { label: "Title", value: task.title },
+        { label: "Category", value: task.category },
+        { label: "Weight", value: task.weight, copy: false },
+      ]
+    }))
   );
 
   $("contributionCount").textContent = `${state.contributions.length} contributions`;
   $("contributionsTable").innerHTML = table(
     ["ID", "Project", "Task", "Contributor", "Status", "Evidence", "Badge"],
-    state.contributions.map((contribution) => [
-      contribution.id,
-      contribution.projectId,
-      contribution.taskId,
-      `<code>${escapeHtml(short(contribution.contributor))}</code>`,
-      `<span class="pill ${contribution.status === 1 ? "finalized" : ""}">${contributionStatus[contribution.status] || contribution.status}</span>`,
-      `<code>${escapeHtml(short(contribution.evidenceUri || contribution.evidenceHash))}</code>`,
-      contribution.badgeTokenId || "-",
-    ])
+    state.contributions.map((contribution) => ({
+      cells: [
+        contribution.id,
+        contribution.projectId,
+        contribution.taskId,
+        `<code title="${escapeHtml(contribution.contributor)}">${escapeHtml(short(contribution.contributor))}</code>`,
+        `<span class="pill ${contribution.status === 1 ? "finalized" : ""}">${contributionStatus[contribution.status] || contribution.status}</span>`,
+        `<code title="${escapeHtml(contribution.evidenceUri || contribution.evidenceHash)}">${escapeHtml(short(contribution.evidenceUri || contribution.evidenceHash))}</code>`,
+        contribution.badgeTokenId || "-",
+      ],
+      details: [
+        { label: "Contribution ID", value: contribution.id, copy: false },
+        { label: "Project ID", value: contribution.projectId, copy: false },
+        { label: "Task ID", value: contribution.taskId, copy: false },
+        { label: "Contributor", value: contribution.contributor },
+        { label: "Status", value: contributionStatus[contribution.status] || contribution.status, copy: false },
+        { label: "Evidence URI", value: contribution.evidenceUri || "" },
+        { label: "Evidence Hash", value: contribution.evidenceHash || "" },
+        { label: "Badge Token ID", value: contribution.badgeTokenId || "-", copy: false },
+      ]
+    }))
   );
 
   $("eventCount").textContent = `${state.events.length} events`;
   $("events").innerHTML = table(
     ["Block", "Event", "Tx"],
-    state.events.slice(-12).reverse().map((event) => [
-      event.blockNumber,
-      event.name,
-      `<code>${escapeHtml(short(event.txHash))}</code>`,
-    ])
+    state.events.slice(-12).reverse().map((event) => ({
+      cells: [
+        event.blockNumber,
+        event.name,
+        `<code title="${escapeHtml(event.txHash)}">${escapeHtml(short(event.txHash))}</code>`,
+      ],
+      details: [
+        { label: "Block", value: event.blockNumber, copy: false },
+        { label: "Event", value: event.name, copy: false },
+        { label: "Transaction Hash", value: event.txHash },
+      ]
+    }))
   );
+  bindTableDetails(document);
 }
 
 async function connectWallet() {
