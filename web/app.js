@@ -21,9 +21,9 @@ async function api(path, options) {
 
 function table(headers, rows) {
   if (!rows.length) return '<p class="empty">No data yet.</p>';
-  return `<table><thead><tr>${headers.map((h) => `<th>${h}</th>`).join("")}</tr></thead><tbody>${rows
+  return `<div class="table-scroll"><table><thead><tr>${headers.map((h) => `<th>${h}</th>`).join("")}</tr></thead><tbody>${rows
     .map((row) => `<tr>${row.map((cell) => `<td>${cell}</td>`).join("")}</tr>`)
-    .join("")}</tbody></table>`;
+    .join("")}</tbody></table></div>`;
 }
 
 async function load() {
