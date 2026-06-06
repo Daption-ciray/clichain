@@ -25,6 +25,12 @@ module.exports = async function handler(req, res) {
       mintedAt: asNumber(data.mintedAt)
     });
   } catch (error) {
+    if (error.code === "CALL_EXCEPTION") {
+      return send(res, 404, {
+        error: "Badge token is not minted yet.",
+        tokenId: Number(new URL(req.url, `https://${req.headers.host || "localhost"}`).searchParams.get("tokenId") || "1")
+      });
+    }
     handleError(res, error);
   }
 };
