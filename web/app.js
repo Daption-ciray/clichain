@@ -208,6 +208,7 @@ async function ensurePolygonNetwork() {
 async function sendProof(method, args) {
   if (!account) await connectWallet();
   await ensurePolygonNetwork();
+  await validateAction(method, args);
   const tx = await api("/api/calldata", {
     method: "POST",
     body: JSON.stringify({ method, args }),
@@ -230,6 +231,41 @@ async function sendProof(method, args) {
     method: "eth_sendTransaction",
     params: [txParams],
   });
+}
+
+async function validateAction(method, args) {
+  if (!["submitContribution", "approveContribution", "createTask", "addMember"].includes(method)) return;
+  const state = await api("/api/indexer");
+
+  if (method === "createTask" || method === "addMember") {
+    const projectId = Number(args[0]);
+    if (!state.projects.some((project) => project.id === projectId)) {
+      throw new Error(`Project ${projectId} does not exist. Create the project first or use an existing Project ID.`);
+    }
+  }
+
+  if (method === "submitContribution") {
+    const [projectId, taskId, evidenceUri] = args;
+    const project = state.projects.find((item) => item.id === Number(projectId));
+    if (!project) throw new Error(`Project ${projectId} does not exist.`);
+    const task = state.tasks.find((item) => item.id === Number(taskId));
+    if (!task) throw new Error(`Task ${taskId} does not exist.`);
+    if (task.projectId !== Number(projectId)) {
+      throw new Error(`Task ${taskId} belongs to Project ${task.projectId}, not Project ${projectId}. Use Project ${task.projectId} or create a task under Project ${projectId}.`);
+    }
+    if (!String(evidenceUri || "").trim()) throw new Error("Evidence URI is empty. Generate Evidence first.");
+    const duplicate = state.contributions.find((item) => item.evidenceUri === evidenceUri);
+    if (duplicate) {
+      throw new Error(`This Evidence URI was already submitted as Contribution ${duplicate.id}. Generate a new IPFS evidence URI first.`);
+    }
+  }
+
+  if (method === "approveContribution") {
+    const contributionId = Number(args[0]);
+    const contribution = state.contributions.find((item) => item.id === contributionId);
+    if (!contribution) throw new Error(`Contribution ${contributionId} does not exist.`);
+    if (contribution.status === 1) throw new Error(`Contribution ${contributionId} is already approved.`);
+  }
 }
 
 async function handleAction(action) {
