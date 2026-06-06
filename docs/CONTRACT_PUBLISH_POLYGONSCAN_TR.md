@@ -46,4 +46,16 @@ Constructor Arguments ABI-encoded:
 8. Registry icin constructor arguments alanini bos birak.
 9. Badge icin yukaridaki ABI-encoded constructor arguments metnini yapistir.
 
-Not: Otomatik Hardhat verify icin PolygonScan/Etherscan API key gerekiyor. Bu repoda API key bulunmadigi icin manuel publish yolu kullaniliyor.
+## Otomatik Verify Sonucu
+
+Hardhat verify ile iki kontrat da Polygon Amoy uzerinde publish edildi:
+
+- ContributionRegistry: https://amoy.polygonscan.com/address/0x985d88E8a3b632bCc45e56fDf7F3918f4DEd2ab2#code
+- ContributionBadge: https://amoy.polygonscan.com/address/0xc9AdFbC3B3652e8d4252223EebAb3d78a8335F3c#code
+
+Kullanilan komutlar:
+
+```bash
+npx hardhat verify --network amoy 0x985d88E8a3b632bCc45e56fDf7F3918f4DEd2ab2
+npx hardhat verify --network amoy 0xc9AdFbC3B3652e8d4252223EebAb3d78a8335F3c 0x985d88E8a3b632bCc45e56fDf7F3918f4DEd2ab2 "Proof of Contribution Badge" POCB
+```

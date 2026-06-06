@@ -4,6 +4,7 @@ import "dotenv/config";
 
 const amoyUrl = process.env.POLYGON_AMOY_RPC_URL ?? "";
 const deployerKey = process.env.DEPLOYER_PRIVATE_KEY ?? "";
+const polygonScanApiKey = process.env.POLYGONSCAN_API_KEY ?? process.env.ETHERSCAN_API_KEY ?? "";
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -21,6 +22,19 @@ const config: HardhatUserConfig = {
       url: amoyUrl,
       accounts: deployerKey ? [deployerKey] : [],
     },
+  },
+  etherscan: {
+    apiKey: polygonScanApiKey,
+    customChains: [
+      {
+        network: "amoy",
+        chainId: 80002,
+        urls: {
+          apiURL: "https://api.etherscan.io/v2/api",
+          browserURL: "https://amoy.polygonscan.com",
+        },
+      },
+    ],
   },
 };
 
