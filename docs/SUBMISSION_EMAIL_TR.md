@@ -18,7 +18,7 @@ GitHub repo:
 - https://github.com/Daption-ciray/clichain
 
 Deploy edilmiş demo URL:
-- https://daption-ciray.github.io/clichain/
+- https://web-weld-five-32.vercel.app/
 
 Akıllı kontrat kaynak kodları:
 - `contracts/contracts/ContributionRegistry.sol`
