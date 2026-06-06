@@ -1,4 +1,4 @@
-const { baseUrl, parseCookies } = require("./_auth");
+const { baseUrl, parseCookies } = require("../../lib/githubAuth");
 const { send } = require("../_shared");
 
 module.exports = async function handler(req, res) {

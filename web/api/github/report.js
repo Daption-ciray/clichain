@@ -1,5 +1,6 @@
 const { handleError, readJson, reportHash, send } = require("../_shared");
-const { githubHeaders } = require("./_auth");
+const { githubHeaders } = require("../../lib/githubAuth");
+const { pinJsonToIpfs, pinataConfigured } = require("../../lib/pinata");
 
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") return send(res, 405, { error: "Method not allowed" });
@@ -42,7 +43,16 @@ module.exports = async function handler(req, res) {
       }
     };
 
-    send(res, 200, { report, hash: reportHash(report) });
+    const hash = reportHash(report);
+    const pin = await pinJsonToIpfs(report, `${owner}-${repo}-${to.slice(0, 12)}-report.json`);
+
+    send(res, 200, {
+      report,
+      hash,
+      pinataConfigured: pinataConfigured(),
+      pin,
+      evidenceUri: pin?.uri || `github://${owner}/${repo}/commit/${to}`
+    });
   } catch (error) {
     handleError(res, error);
   }

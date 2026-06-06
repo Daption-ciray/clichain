@@ -288,8 +288,14 @@ async function generateGithubReport() {
     method: "POST",
     body: JSON.stringify(body),
   });
-  $("evidenceUri").value = `github://${body.owner}/${body.repo}/commit/${body.to || result.report.subject?.[0]?.digest?.gitTo || ""}`;
-  $("githubOutput").innerHTML = `<pre>${escapeHtml(JSON.stringify({ hash: result.hash, evidenceUri: $("evidenceUri").value }, null, 2))}</pre>`;
+  $("evidenceUri").value = result.evidenceUri;
+  $("githubOutput").innerHTML = `<pre>${escapeHtml(JSON.stringify({
+    reportHash: result.hash,
+    evidenceUri: result.evidenceUri,
+    ipfsCid: result.pin?.cid || null,
+    pinata: result.pin ? "pinned" : "not configured; using GitHub URI fallback",
+    note: "Submit Contribution writes the URI reference to Polygon; the full report stays off-chain."
+  }, null, 2))}</pre>`;
 }
 
 function bind() {
