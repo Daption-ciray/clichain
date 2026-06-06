@@ -1,4 +1,5 @@
 const { handleError, readJson, reportHash, send } = require("../_shared");
+const { githubHeaders } = require("./_auth");
 
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") return send(res, 405, { error: "Method not allowed" });
@@ -14,7 +15,7 @@ module.exports = async function handler(req, res) {
     const compareUrl = from
       ? `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/compare/${encodeURIComponent(from)}...${encodeURIComponent(to)}`
       : `https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/commits/${encodeURIComponent(to)}`;
-    const response = await fetch(compareUrl, { headers: { "user-agent": "contribution-chain-web" } });
+    const response = await fetch(compareUrl, { headers: githubHeaders(req) });
     const data = await response.json();
     if (!response.ok) throw new Error(data.message || "GitHub request failed");
 

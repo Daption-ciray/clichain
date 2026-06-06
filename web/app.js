@@ -1,5 +1,6 @@
 let account = "";
 let config = null;
+let githubSession = { authenticated: false, oauthConfigured: false };
 
 const $ = (id) => document.getElementById(id);
 const POLYGON_CHAIN_ID = "0x89";
@@ -190,16 +191,22 @@ async function loadBadge() {
 
 async function loadRepos() {
   const owner = $("ghOwner").value.trim();
-  const repos = await api(`/api/github/repos?owner=${encodeURIComponent(owner)}`);
+  const path = githubSession.authenticated ? "/api/github/repos" : `/api/github/repos?owner=${encodeURIComponent(owner)}`;
+  const repos = await api(path);
   $("repoList").innerHTML = repos.map((repo) => `
-    <button class="choice" data-repo="${escapeHtml(repo.name)}" data-full-name="${escapeHtml(repo.fullName)}">
+    <button class="choice" data-repo="${escapeHtml(repo.name)}" data-owner="${escapeHtml(repo.owner || owner)}" data-full-name="${escapeHtml(repo.fullName)}">
       <strong>${escapeHtml(repo.name)}</strong>
-      <span>${escapeHtml(repo.defaultBranch)}</span>
+      <span>${escapeHtml(repo.owner || owner)} / ${escapeHtml(repo.defaultBranch)}${repo.private ? " / private" : ""}</span>
     </button>
   `).join("");
-  $("githubOutput").innerHTML = `<pre>${escapeHtml(JSON.stringify({ connected: owner, repositories: repos.length }, null, 2))}</pre>`;
+  $("githubOutput").innerHTML = `<pre>${escapeHtml(JSON.stringify({
+    connected: githubSession.authenticated ? githubSession.login : owner,
+    mode: githubSession.authenticated ? "GitHub OAuth" : "public user lookup",
+    repositories: repos.length
+  }, null, 2))}</pre>`;
   document.querySelectorAll("[data-repo]").forEach((button) => {
     button.addEventListener("click", async () => {
+      $("ghOwner").value = button.dataset.owner;
       $("ghRepo").value = button.dataset.repo;
       $("ghFrom").value = "";
       $("ghTo").value = "";
@@ -208,6 +215,30 @@ async function loadRepos() {
       await loadCommits();
     });
   });
+}
+
+async function loadGithubSession() {
+  githubSession = await api("/api/github/me");
+  if (githubSession.authenticated) {
+    $("ghOwner").value = githubSession.login;
+    $("connectGithub").textContent = `GitHub: ${githubSession.login}`;
+    await loadRepos();
+    return;
+  }
+  $("connectGithub").textContent = "Connect GitHub";
+}
+
+async function connectGithub() {
+  githubSession = await api("/api/github/me");
+  if (!githubSession.oauthConfigured) {
+    alert("GitHub OAuth app is not configured yet. Set GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET in Vercel.");
+    return;
+  }
+  if (githubSession.authenticated) {
+    await loadRepos();
+    return;
+  }
+  window.location.href = "/api/github/login";
 }
 
 async function loadCommits() {
@@ -264,7 +295,7 @@ async function generateGithubReport() {
 function bind() {
   $("refresh").addEventListener("click", load);
   $("connect").addEventListener("click", () => connectWallet().catch(alert));
-  $("connectGithub").addEventListener("click", () => loadRepos().catch(alert));
+  $("connectGithub").addEventListener("click", () => connectGithub().catch(alert));
   $("loadProfile").addEventListener("click", () => loadProfile().catch((err) => $("profileResult").textContent = err.message));
   $("loadBadge").addEventListener("click", () => loadBadge().catch((err) => $("badgeResult").textContent = err.message));
   $("loadRepos").addEventListener("click", () => loadRepos().catch(alert));
@@ -276,6 +307,7 @@ function bind() {
 }
 
 bind();
+loadGithubSession().catch(() => {});
 load().catch((err) => {
   $("network").textContent = err.message;
 });

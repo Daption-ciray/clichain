@@ -1,4 +1,5 @@
 const { handleError, send } = require("../_shared");
+const { githubHeaders } = require("./_auth");
 
 module.exports = async function handler(req, res) {
   try {
@@ -8,7 +9,7 @@ module.exports = async function handler(req, res) {
     if (!owner || !repo) throw new Error("owner and repo are required");
 
     const response = await fetch(`https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/commits?per_page=20`, {
-      headers: { "user-agent": "contribution-chain-web" }
+      headers: githubHeaders(req)
     });
     const commits = await response.json();
     if (!response.ok) throw new Error(commits.message || "GitHub request failed");
