@@ -1,192 +1,359 @@
 <!doctype html>
-<html lang="en">
+<html lang="tr">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Proof of Contribution</title>
+  <title>Clichain | Contribution Chain MVP</title>
   <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
+  <div class="grid-glow" aria-hidden="true"></div>
+
   <header class="topbar">
-    <a class="brand" href="#">
-      <span class="brand-mark">PoC</span>
-      <span>Contribution Chain</span>
+    <a class="brand" href="#top" aria-label="Clichain ana sayfa">
+      <span class="brand-mark">cc</span>
+      <span>clichain()</span>
     </a>
-    <nav class="nav">
-      <a href="#projects">Projects</a>
-      <a href="#actions">Actions</a>
-      <a href="#profile">Profile</a>
-      <a href="#github">GitHub</a>
+    <button id="mobileToggle" class="icon-button" type="button" aria-label="Menüyü aç">=</button>
+    <nav class="nav" id="siteNav">
+      <a href="#flow">Akış</a>
+      <a href="#features">Özellikler</a>
+      <a href="#architecture">Mimari</a>
+      <a href="#cli">CLI</a>
+      <a href="#faq">SSS</a>
     </nav>
     <div class="actions">
-      <button id="refresh" class="button secondary" type="button">Refresh</button>
+      <a class="button secondary" href="#verify">Raporu Doğrula</a>
       <button id="connect" class="button primary" type="button">Connect Wallet</button>
     </div>
   </header>
 
-  <main>
-    <section class="hero">
-      <div class="hero-copy">
-        <p class="eyebrow">Polygon mainnet contribution integrity</p>
-        <h1>Proof of Contribution</h1>
+  <main id="top">
+    <section class="hero section-shell">
+      <div class="hero-copy reveal">
+        <p class="eyebrow">Contribution Chain MVP</p>
+        <h1>Katkıyı Kanıtla. Rozeti Zincire Taşı.</h1>
         <p class="lead">
-          Project, task, member, contribution evidence, approval, profile and soulbound badge flow
-          for verifiable team contribution records.
+          Clichain, git katkılarını in-toto rapora dönüştürür, deterministik hash üretir,
+          IPFS üzerinde saklar ve çoklu onay tamamlanınca soulbound katkı rozeti mintler.
         </p>
+        <div class="hero-pills" aria-label="Teknik özellikler">
+          <span>{ in-toto }</span>
+          <span>&lt;SBT /&gt;</span>
+          <span>ipfs://CID</span>
+          <span>verify-chain</span>
+        </div>
         <div class="hero-actions">
-          <a class="button primary" href="https://github.com/Daption-ciray/clichain" target="_blank" rel="noreferrer">View repo</a>
-          <a id="contractLink" class="button secondary" href="https://polygonscan.com" target="_blank" rel="noreferrer">Contract</a>
+          <a class="button primary large" href="#dashboard">Demo Akışı Başlat</a>
+          <a class="button secondary large" href="#github">GitHub Raporunu Tara</a>
         </div>
       </div>
-      <aside class="hero-card">
-        <span class="card-kicker">Polygon Mainnet</span>
-        <strong>ProofOfContribution</strong>
-        <code id="contractAddress">Waiting for deployment</code>
-        <span id="network">Loading network...</span>
+
+      <aside class="hero-console reveal">
+        <div class="terminal-bar">
+          <span></span><span></span><span></span>
+          <strong>clichain/proof</strong>
+        </div>
+        <pre><code><span class="prompt">$</span> poc scan --repo .
+<span class="ok">✓</span> 28 commits indexed
+<span class="prompt">$</span> poc hash report.json
+<span class="hash">0x8fb9...e31a</span>
+<span class="prompt">$</span> poc submit --upload-ipfs
+<span class="cid">ipfs://Qm...proof</span>
+<span class="prompt">$</span> poc verify-chain report.json
+<span class="ok">verified: threshold met</span></code></pre>
       </aside>
     </section>
 
-    <section class="summary" id="summary"></section>
-
-    <section class="layout" id="projects">
-      <div class="panel">
-        <div class="panel-head">
-          <div>
-            <p class="eyebrow">On-chain state</p>
-            <h2>Projects</h2>
-          </div>
-          <span id="projectCount"></span>
-        </div>
-        <div id="projectsTable"></div>
-      </div>
-
-      <div class="panel">
-        <div class="panel-head">
-          <div>
-            <p class="eyebrow">Task registry</p>
-            <h2>Tasks</h2>
-          </div>
-          <span id="taskCount"></span>
-        </div>
-        <div id="tasksTable"></div>
+    <section class="stack-marquee" aria-label="Teknoloji stack">
+      <div class="marquee-track">
+        <span>GITHUB</span><span>SOLIDITY</span><span>HARDHAT</span><span>IPFS</span><span>PINATA</span>
+        <span>ETHERS</span><span>IN-TOTO</span><span>POLYGON</span><span>TYPESCRIPT</span>
+        <span>GITHUB</span><span>SOLIDITY</span><span>HARDHAT</span><span>IPFS</span><span>PINATA</span>
+        <span>ETHERS</span><span>IN-TOTO</span><span>POLYGON</span><span>TYPESCRIPT</span>
       </div>
     </section>
 
-    <section class="layout" id="actions">
-      <div class="panel">
-        <div class="panel-head">
-          <div>
-            <p class="eyebrow">Project setup</p>
-            <h2>Create project, members and tasks</h2>
-          </div>
-          <span id="wallet"></span>
-        </div>
-        <div class="form-grid">
-          <label>Project name <input id="projectName" value="Course project" /></label>
-          <label>Supervisor <input id="supervisor" placeholder="0x supervisor wallet" /></label>
-          <button class="button primary compact" data-action="createProject">Create Project</button>
-          <label>Project ID <input id="projectId" value="1" /></label>
-          <label>Member wallet <input id="memberAddress" placeholder="0x member wallet" /></label>
-          <button class="button primary compact" data-action="addMember">Add Member</button>
-          <label>Task title <input id="taskTitle" value="Smart contract implementation" /></label>
-          <label>Category <input id="taskCategory" value="code" /></label>
-          <label>Weight <input id="taskWeight" value="40" /></label>
-          <button class="button primary compact" data-action="createTask">Create Task</button>
-        </div>
+    <section class="value section-shell reveal">
+      <div>
+        <p class="eyebrow">Problem / Value</p>
+        <h2>Katkı metrikleri ekran görüntüsü olmak zorunda değil.</h2>
       </div>
+      <p>
+        Katkı raporları değiştirilebilir dosyalar ya da manuel beyanlar olarak kalmasın.
+        Clichain; hash, onay eşiği, IPFS kanıtı ve soulbound rozet zinciriyle katkıyı
+        doğrulanabilir hale getirir.
+      </p>
+      <div class="metric-grid">
+        <article>
+          <strong>Deterministik Hash</strong>
+          <span>Aynı rapor, aynı kanıt parmak izini üretir.</span>
+        </article>
+        <article>
+          <strong>Çoklu Onay</strong>
+          <span>Yetkili approver eşiği tamamlanmadan final durum oluşmaz.</span>
+        </article>
+        <article>
+          <strong>Soulbound Badge</strong>
+          <span>Katkı rozeti kişiye bağlıdır, transfer edilemez.</span>
+        </article>
+      </div>
+    </section>
 
-      <div class="panel">
-        <div class="panel-head">
-          <div>
-            <p class="eyebrow">Contribution flow</p>
-            <h2>Submit and approve evidence</h2>
+    <section class="workflow section-shell" id="flow">
+      <div class="section-head reveal">
+        <p class="eyebrow">Akış</p>
+        <h2>Git geçmişinden zincir üstü rozete.</h2>
+      </div>
+      <div class="timeline">
+        <article class="flow-card reveal"><span>01</span><strong>Git geçmişini tara</strong><p>Commit aralığı ve contributor verisi okunur.</p></article>
+        <article class="flow-card reveal"><span>02</span><strong>in-toto report.json üret</strong><p>Katkı raporu standart Statement v1 formatına alınır.</p></article>
+        <article class="flow-card reveal"><span>03</span><strong>Hash hesapla ve IPFS'e yükle</strong><p>Rapor Pinata/IPFS'e pinlenir, kanıt CID'i oluşur.</p></article>
+        <article class="flow-card reveal"><span>04</span><strong>Kontrata submit et</strong><p>Rapor referansı ve hash zincire anchor edilir.</p></article>
+        <article class="flow-card reveal"><span>05</span><strong>Approver attest eder</strong><p>Repo owner tarafından yetkilendirilen onaycılar imza verir.</p></article>
+        <article class="flow-card reveal"><span>06</span><strong>Finalize + badge mint</strong><p>Threshold tamamlanınca soulbound badge üretilir.</p></article>
+      </div>
+    </section>
+
+    <section class="features section-shell" id="features">
+      <div class="section-head reveal">
+        <p class="eyebrow">Özellikler</p>
+        <h2>Katkı kanıtı için uçtan uca MVP.</h2>
+      </div>
+      <div class="feature-grid">
+        <article class="feature-card reveal">
+          <span class="feature-tag">Registry Contract</span>
+          <h3>Rapor hash'i ve durum takibi</h3>
+          <p>Owner, threshold, report hash, URI ve final durum kontrat seviyesinde izlenir.</p>
+        </article>
+        <article class="feature-card reveal">
+          <span class="feature-tag">CLI Pipeline</span>
+          <h3>scan, hash, submit, attest</h3>
+          <p>Komut satırı akışı report üretiminden verify-chain doğrulamasına kadar çalışır.</p>
+        </article>
+        <article class="feature-card reveal">
+          <span class="feature-tag">Dashboard</span>
+          <h3>Wallet, GitHub ve indexer</h3>
+          <p>Repo/commit seçimi, report verification ve lightweight event stream tek ekrandadır.</p>
+        </article>
+        <article class="feature-card reveal">
+          <span class="feature-tag">Soulbound Badge</span>
+          <h3>Transfer edilemeyen katkı rozeti</h3>
+          <p>Onaylanan katkı metadata'sı okunabilir, rozet kullanıcıya bağlı kalır.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="architecture section-shell" id="architecture">
+      <div class="section-head reveal">
+        <p class="eyebrow">Mimari</p>
+        <h2>Off-chain rapor, on-chain kanıt.</h2>
+      </div>
+      <div class="architecture-grid">
+        <div class="code-window reveal" id="cli">
+          <div class="terminal-bar">
+            <span></span><span></span><span></span>
+            <strong>poc cli</strong>
           </div>
+          <pre id="terminalText"><code>poc scan --repo .
+poc hash report.json
+poc submit --upload-ipfs
+poc attest --report-id 1
+poc finalize --report-id 1
+poc verify-chain report.json</code></pre>
         </div>
-        <div class="form-grid">
-          <label>Task ID <input id="taskId" value="1" /></label>
-          <label>Evidence URI / hash <input id="evidenceUri" value="ipfs://contribution-evidence" /></label>
-          <button class="button primary compact" data-action="submitContribution">Submit Contribution</button>
-          <label>Contribution ID <input id="contributionId" value="1" /></label>
-          <label>Badge metadata URI <input id="badgeUri" value="ipfs://badge-metadata" /></label>
-          <button class="button primary compact" data-action="approveContribution">Approve Contribution</button>
+        <div class="system-map reveal">
+          <article><strong>GitHub</strong><span>commit range + contributor trace</span></article>
+          <article><strong>Report</strong><span>in-toto Statement v1 + deterministic hash</span></article>
+          <article><strong>IPFS</strong><span>Pinata üzerinde report.json saklama</span></article>
+          <article><strong>Polygon</strong><span>hash anchor + threshold attestations + SBT</span></article>
         </div>
       </div>
     </section>
 
-    <section class="layout" id="profile">
-      <div class="panel">
-        <div class="panel-head">
-          <div>
-            <p class="eyebrow">Pending and approved evidence</p>
-            <h2>Contributions</h2>
-          </div>
-          <span id="contributionCount"></span>
-        </div>
-        <div id="contributionsTable"></div>
+    <section class="use-cases section-shell">
+      <div class="section-head reveal">
+        <p class="eyebrow">Kullanım senaryoları</p>
+        <h2>Katkının kanıt olması gereken yerlerde.</h2>
       </div>
-
-      <div class="panel">
-        <div class="panel-head">
-          <div>
-            <p class="eyebrow">Contribution profile</p>
-            <h2>Profile and badge</h2>
-          </div>
-          <button id="loadProfile" class="button primary compact" type="button">Load Profile</button>
-        </div>
-        <div class="form-grid">
-          <label>User wallet <input id="profileUser" placeholder="0x user wallet" /></label>
-          <label>Category <input id="profileCategory" value="code" /></label>
-          <label>Token ID <input id="tokenId" value="1" /></label>
-          <button id="loadBadge" class="button secondary compact" type="button">Load Badge</button>
-        </div>
-        <pre id="profileResult"></pre>
-        <pre id="badgeResult"></pre>
+      <div class="use-grid">
+        <article class="reveal">Açık kaynak maintainer'ları</article>
+        <article class="reveal">Hackathon ve akademik proje jürileri</article>
+        <article class="reveal">DAO contribution tracking</article>
+        <article class="reveal">Kurumsal engineering proof-of-work</article>
       </div>
     </section>
 
-    <section class="layout" id="github">
-      <div class="panel">
-        <div class="panel-head">
-          <div>
-            <p class="eyebrow">Evidence helper</p>
-            <h2>GitHub</h2>
-          </div>
-          <button id="connectGithub" class="button primary compact" type="button">Connect GitHub</button>
+    <section class="faq section-shell" id="faq">
+      <div class="section-head reveal">
+        <p class="eyebrow">SSS</p>
+        <h2>Net cevaplar.</h2>
+      </div>
+      <div class="faq-list">
+        <details class="reveal" open>
+          <summary>Bu bir CV/portfolio sitesi mi?</summary>
+          <p>Hayır. Clichain, katkı raporlarını doğrulanabilir zincir üstü kanıta dönüştüren bir MVP'dir.</p>
+        </details>
+        <details class="reveal">
+          <summary>Raporlar nerede saklanır?</summary>
+          <p>Hash zincirde tutulur. Rapor dosyası opsiyonel olarak IPFS/Pinata üzerinde saklanır.</p>
+        </details>
+        <details class="reveal">
+          <summary>Rozet transfer edilebilir mi?</summary>
+          <p>Hayır. Contribution badge soulbound olarak tasarlanır ve katkıyı yapan hesaba bağlı kalır.</p>
+        </details>
+        <details class="reveal">
+          <summary>Kim onay verir?</summary>
+          <p>Repo owner veya proje yöneticisi tarafından yetkilendirilen approver'lar onay verir; threshold ayarlanabilir.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="dashboard-shell" id="dashboard">
+      <div class="dashboard-head section-shell reveal">
+        <p class="eyebrow">Canlı demo dashboard</p>
+        <h2>Rapor üret, IPFS'e pinle, Polygon'a anchor et.</h2>
+        <div class="dashboard-status">
+          <p id="network">Loading network...</p>
+          <button id="refresh" class="button secondary compact" type="button">Refresh</button>
         </div>
-        <div class="form-grid">
-          <label>GitHub username <input id="ghOwner" value="Daption-ciray" /></label>
-          <label>Selected repo <input id="ghRepo" value="clichain" readonly /></label>
-          <label>From commit <input id="ghFrom" placeholder="select from commit list" readonly /></label>
-          <label>To commit <input id="ghTo" placeholder="select from commit list" readonly /></label>
-          <button id="loadRepos" class="button secondary compact" type="button">Load Repos</button>
-          <button id="loadCommits" class="button secondary compact" type="button">Load Commits</button>
-          <button id="generateGithubReport" class="button primary compact" type="button">Generate Evidence</button>
+        <div class="contract-strip">
+          <span>Contract</span>
+          <code id="contractAddress">Waiting for deployment</code>
+          <a id="contractLink" href="#" target="_blank" rel="noreferrer">Polygonscan</a>
         </div>
-        <div class="github-picker">
-          <div>
-            <p class="eyebrow">Repositories</p>
-            <div id="repoList" class="choice-list"></div>
-          </div>
-          <div>
-            <p class="eyebrow">Commits</p>
-            <div id="commitList" class="choice-list"></div>
-          </div>
-        </div>
-        <div id="githubOutput"></div>
       </div>
 
-      <div class="panel">
-        <div class="panel-head">
-          <div>
-            <p class="eyebrow">Event stream</p>
-            <h2>Indexer</h2>
+      <section class="summary section-shell" id="summary"></section>
+
+      <section class="layout section-shell" id="projects">
+        <div class="panel">
+          <div class="panel-head">
+            <div><p class="eyebrow">On-chain state</p><h2>Projects</h2></div>
+            <span id="projectCount"></span>
           </div>
-          <span id="eventCount"></span>
+          <div id="projectsTable"></div>
         </div>
-        <div id="events"></div>
+        <div class="panel">
+          <div class="panel-head">
+            <div><p class="eyebrow">Task registry</p><h2>Tasks</h2></div>
+            <span id="taskCount"></span>
+          </div>
+          <div id="tasksTable"></div>
+        </div>
+      </section>
+
+      <section class="layout section-shell" id="actionsPanel">
+        <div class="panel">
+          <div class="panel-head">
+            <div><p class="eyebrow">Project setup</p><h2>Project, member ve task</h2></div>
+            <span id="wallet"></span>
+          </div>
+          <div class="form-grid">
+            <label>Project name <input id="projectName" value="clichain-demo" /></label>
+            <label>Supervisor <input id="supervisor" placeholder="0x..." /></label>
+            <button class="button primary compact" data-action="createProject">Create Project</button>
+            <label>Project ID <input id="projectId" value="1" /></label>
+            <label>Member address <input id="memberAddress" placeholder="0x..." /></label>
+            <button class="button secondary compact" data-action="addMember">Add Member</button>
+            <label>Task title <input id="taskTitle" value="Contribution report" /></label>
+            <label>Category <input id="taskCategory" value="code" /></label>
+            <label>Weight <input id="taskWeight" value="10" /></label>
+            <button class="button secondary compact" data-action="createTask">Create Task</button>
+          </div>
+        </div>
+
+        <div class="panel" id="verify">
+          <div class="panel-head">
+            <div><p class="eyebrow">Contribution proof</p><h2>Submit ve approve</h2></div>
+          </div>
+          <div class="form-grid">
+            <label>Task ID <input id="taskId" value="1" /></label>
+            <label>Evidence URI <input id="evidenceUri" placeholder="ipfs://CID" /></label>
+            <button class="button primary compact" data-action="submitContribution">Submit Contribution</button>
+            <label>Contribution ID <input id="contributionId" value="1" /></label>
+            <label>Badge metadata URI <input id="badgeUri" value="ipfs://badge-metadata" /></label>
+            <button class="button secondary compact" data-action="approveContribution">Approve Contribution</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="layout section-shell" id="profile">
+        <div class="panel">
+          <div class="panel-head">
+            <div><p class="eyebrow">Pending / approved evidence</p><h2>Contributions</h2></div>
+            <span id="contributionCount"></span>
+          </div>
+          <div id="contributionsTable"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head">
+            <div><p class="eyebrow">Soulbound state</p><h2>Profile ve badge</h2></div>
+          </div>
+          <div class="form-grid">
+            <label>User <input id="profileUser" placeholder="0x..." /></label>
+            <label>Category <input id="profileCategory" value="code" /></label>
+            <button id="loadProfile" class="button secondary compact" type="button">Load Profile</button>
+            <label>Token ID <input id="tokenId" value="1" /></label>
+            <button id="loadBadge" class="button secondary compact" type="button">Load Badge</button>
+          </div>
+          <pre id="profileResult"></pre>
+          <pre id="badgeResult"></pre>
+        </div>
+      </section>
+
+      <section class="layout section-shell" id="github">
+        <div class="panel">
+          <div class="panel-head">
+            <div><p class="eyebrow">Evidence helper</p><h2>GitHub</h2></div>
+            <button id="connectGithub" class="button primary compact" type="button">Connect GitHub</button>
+          </div>
+          <div class="form-grid">
+            <label>GitHub username <input id="ghOwner" value="Daption-ciray" /></label>
+            <label>Selected repo <input id="ghRepo" value="clichain" readonly /></label>
+            <label>From commit <input id="ghFrom" placeholder="commit seç" readonly /></label>
+            <label>To commit <input id="ghTo" placeholder="latest commit" readonly /></label>
+            <button id="loadRepos" class="button secondary compact" type="button">Load Repos</button>
+            <button id="loadCommits" class="button secondary compact" type="button">Load Commits</button>
+            <button id="generateGithubReport" class="button primary compact" type="button">Generate Evidence</button>
+          </div>
+          <div class="github-picker">
+            <div><p class="eyebrow">Repositories</p><div id="repoList" class="choice-list"></div></div>
+            <div><p class="eyebrow">Commits</p><div id="commitList" class="choice-list"></div></div>
+          </div>
+          <div id="githubOutput"></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head">
+            <div><p class="eyebrow">Lightweight event stream</p><h2>Indexer</h2></div>
+            <span id="eventCount"></span>
+          </div>
+          <div id="events"></div>
+        </div>
+      </section>
+    </section>
+
+    <section class="footer-cta section-shell">
+      <p class="eyebrow">Final CTA</p>
+      <h2>Katkı kanıtını manuel beyanlardan çıkar.</h2>
+      <p>Clichain ile repo katkılarını tara, raporu sabitle, onaylat ve zincir üstü rozetle.</p>
+      <div class="hero-actions">
+        <a class="button primary large" href="#dashboard">Demo Akışı Başlat</a>
+        <a class="button secondary large" href="https://github.com/Daption-ciray/clichain" target="_blank" rel="noreferrer">GitHub</a>
+        <a class="button secondary large" href="#cli">CLI</a>
       </div>
     </section>
   </main>
+
+  <footer class="footer">
+    <span>clichain() / Contribution Chain MVP</span>
+    <nav>
+      <a href="https://github.com/Daption-ciray/clichain" target="_blank" rel="noreferrer">GitHub</a>
+      <a href="#architecture">Dokümantasyon</a>
+      <a href="#cli">CLI</a>
+    </nav>
+  </footer>
 
   <script src="./app.js"></script>
 </body>

@@ -299,6 +299,7 @@ async function generateGithubReport() {
 }
 
 function bind() {
+  bindLandingInteractions();
   $("refresh").addEventListener("click", load);
   $("connect").addEventListener("click", () => connectWallet().catch(alert));
   $("connectGithub").addEventListener("click", () => connectGithub().catch(alert));
@@ -310,6 +311,46 @@ function bind() {
   document.querySelectorAll("[data-action]").forEach((button) => {
     button.addEventListener("click", () => handleAction(button.dataset.action).catch(alert));
   });
+}
+
+function bindLandingInteractions() {
+  const mobileToggle = $("mobileToggle");
+  const siteNav = $("siteNav");
+  if (mobileToggle && siteNav) {
+    mobileToggle.addEventListener("click", () => siteNav.classList.toggle("open"));
+    siteNav.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => siteNav.classList.remove("open"));
+    });
+  }
+
+  const revealItems = document.querySelectorAll(".reveal");
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in-view");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.14 });
+    revealItems.forEach((item) => observer.observe(item));
+  } else {
+    revealItems.forEach((item) => item.classList.add("in-view"));
+  }
+
+  const terminal = $("terminalText");
+  if (terminal && !terminal.dataset.typed) {
+    terminal.dataset.typed = "true";
+    const text = terminal.textContent;
+    terminal.textContent = "";
+    let index = 0;
+    const tick = () => {
+      terminal.textContent = text.slice(0, index);
+      index += 1;
+      if (index <= text.length) window.setTimeout(tick, 18);
+    };
+    tick();
+  }
 }
 
 bind();
