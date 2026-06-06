@@ -348,10 +348,12 @@ async function loadGithubSession() {
   if (githubSession.authenticated) {
     $("ghOwner").value = githubSession.login;
     $("connectGithub").textContent = `GitHub: ${githubSession.login}`;
+    $("disconnectGithub").hidden = false;
     await loadRepos();
     return;
   }
   $("connectGithub").textContent = "Connect GitHub";
+  $("disconnectGithub").hidden = true;
 }
 
 async function connectGithub() {
@@ -365,6 +367,15 @@ async function connectGithub() {
     return;
   }
   window.location.href = "/api/github/login";
+}
+
+async function disconnectGithub() {
+  githubSession = await api("/api/github/me", { method: "DELETE" });
+  $("connectGithub").textContent = "Connect GitHub";
+  $("disconnectGithub").hidden = true;
+  $("repoList").innerHTML = "";
+  $("commitList").innerHTML = "";
+  $("githubOutput").innerHTML = `<pre>${escapeHtml(JSON.stringify({ disconnected: true }, null, 2))}</pre>`;
 }
 
 async function loadCommits() {
@@ -429,6 +440,7 @@ function bind() {
   $("refresh").addEventListener("click", load);
   $("connect").addEventListener("click", () => connectWallet().catch(alert));
   $("connectGithub").addEventListener("click", () => connectGithub().catch(alert));
+  $("disconnectGithub").addEventListener("click", () => disconnectGithub().catch(alert));
   $("loadProfile").addEventListener("click", () => loadProfile().catch((err) => $("profileResult").textContent = err.message));
   $("loadBadge").addEventListener("click", () => loadBadge().catch((err) => $("badgeResult").textContent = err.message));
   $("loadRepos").addEventListener("click", () => loadRepos().catch(alert));

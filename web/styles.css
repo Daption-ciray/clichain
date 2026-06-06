@@ -129,6 +129,7 @@ input {
 .brand,
 .nav,
 .actions,
+.button-row,
 .hero-actions,
 .hero-pills,
 .panel-head,
@@ -182,6 +183,12 @@ input {
 .actions {
   justify-content: flex-end;
   gap: 10px;
+}
+
+.button-row {
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .icon-button {

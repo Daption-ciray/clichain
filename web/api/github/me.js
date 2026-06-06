@@ -3,6 +3,11 @@ const { handleError, send } = require("../../lib/shared");
 
 module.exports = async function handler(req, res) {
   try {
+    if (req.method === "DELETE") {
+      res.setHeader("set-cookie", "gh_token=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax; Secure");
+      return send(res, 200, { authenticated: false, oauthConfigured: oauthConfigured(), disconnected: true });
+    }
+
     if (!oauthConfigured()) return send(res, 200, { authenticated: false, oauthConfigured: false });
     if (!githubToken(req)) return send(res, 200, { authenticated: false, oauthConfigured: true });
 
