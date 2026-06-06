@@ -1,4 +1,4 @@
-const { handleError, readJson, reportHash, send } = require("../_shared");
+const { handleError, readJson, reportHash, send } = require("../../lib/shared");
 const { githubHeaders } = require("../../lib/githubAuth");
 const { pinJsonToIpfs, pinataConfigured } = require("../../lib/pinata");
 

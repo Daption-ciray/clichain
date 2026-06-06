@@ -1,5 +1,5 @@
 const { githubHeaders, githubToken, oauthConfigured } = require("../../lib/githubAuth");
-const { handleError, send } = require("../_shared");
+const { handleError, send } = require("../../lib/shared");
 
 module.exports = async function handler(req, res) {
   try {

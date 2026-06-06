@@ -1,4 +1,4 @@
-const { CHAIN_ID, EXPLORER_URL, PROOF_CONTRACT_ADDRESS, handleError, provider, send } = require("./_shared");
+const { CHAIN_ID, EXPLORER_URL, PROOF_CONTRACT_ADDRESS, handleError, provider, send } = require("../lib/shared");
 
 module.exports = async function handler(req, res) {
   try {

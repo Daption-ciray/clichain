@@ -1,6 +1,6 @@
 const crypto = require("crypto");
 const { baseUrl, oauthConfigured } = require("../../lib/githubAuth");
-const { send } = require("../_shared");
+const { send } = require("../../lib/shared");
 
 module.exports = async function handler(req, res) {
   if (!oauthConfigured()) {

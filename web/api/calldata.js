@@ -1,4 +1,4 @@
-const { PROOF_CONTRACT_ADDRESS, handleError, proofAbi, readJson, send } = require("./_shared");
+const { PROOF_CONTRACT_ADDRESS, handleError, proofAbi, readJson, send } = require("../lib/shared");
 const { ethers } = require("ethers");
 
 const allowed = new Set([

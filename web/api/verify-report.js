@@ -1,4 +1,4 @@
-const { handleError, readJson, reportHash, send } = require("./_shared");
+const { handleError, readJson, reportHash, send } = require("../lib/shared");
 
 module.exports = async function handler(req, res) {
   if (req.method !== "POST") return send(res, 405, { error: "Method not allowed" });

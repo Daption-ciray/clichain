@@ -1,4 +1,4 @@
-const { handleError, send } = require("../_shared");
+const { handleError, send } = require("../../lib/shared");
 const { githubHeaders } = require("../../lib/githubAuth");
 
 module.exports = async function handler(req, res) {

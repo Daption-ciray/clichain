@@ -1,4 +1,4 @@
-const { PROOF_CONTRACT_ADDRESS, asNumber, handleError, proof, provider, send } = require("./_shared");
+const { PROOF_CONTRACT_ADDRESS, asNumber, handleError, proof, provider, send } = require("../lib/shared");
 
 module.exports = async function handler(req, res) {
   try {

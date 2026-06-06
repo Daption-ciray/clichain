@@ -1,4 +1,4 @@
-const { asNumber, handleError, proof, send } = require("./_shared");
+const { asNumber, handleError, proof, send } = require("../lib/shared");
 
 module.exports = async function handler(req, res) {
   try {
